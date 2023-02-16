@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Услуги</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Наименование</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Абонент</th>
+
+          </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+                <tr>
+                  <td><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></td>
+                  <td>{{ service.type }}</td>
+                    <td>{{ service.created_date }}</td>
+                    <td>{{ service.abonent }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>Создать новую услугу</h2>
+
+      <form method="post">{% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Создать">
+    </form>
+{% endblock %}

@@ -216,7 +216,7 @@ CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
-# CSRF_TRUSTED_ORIGINS = ['https://4e9d-188-0-169-246.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://7fd6-188-0-175-236.ngrok.io']
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend

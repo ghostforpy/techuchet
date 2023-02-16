@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Оборудование</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Наименование</th>
+            <th scope="col">Тип</th>
+            <th scope="col">IP</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата изменения</th>
+            <th scope="col">Сущность</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Здание</th>
+
+          </tr>
+        </thead>
+        <tbody>
+            {% for node in nodes %}
+                <tr>
+                  <td><a href="{{ node.get_absolute_url }}">{{ node.name }}</a></td>
+                    <td>{{ node.type }}</td>
+                    <td>{{ node.ip_address }}</td>
+                    <td>{{ node.created_date }}</td>
+                    <td>{{ node.change_date }}</td>
+                    <td>{{ node.entity }}</td>
+                    <td>{{ node.status }}</td>
+                    <td>{{ node.buiilding }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      <h2>Создать новое оборудование</h2>
+
+      <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Создать">
+    </form>
+{% endblock %}

@@ -9,6 +9,8 @@ class BuildingType(models.Model):
         verbose_name = "Тип здания"
         verbose_name_plural = "Типы зданий"
 
+    def __str__(self):
+        return self.name
 
 class Building(models.Model):
     type = models.ForeignKey(BuildingType, on_delete=models.CASCADE, verbose_name="Тип")
@@ -18,3 +20,6 @@ class Building(models.Model):
     class Meta:
         verbose_name = "Здание"
         verbose_name_plural = "Здания"
+
+    def __str__(self):
+        return f'{self.street}, {self.house}'

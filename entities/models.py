@@ -9,3 +9,6 @@ class Entity(models.Model):
     class Meta:
         verbose_name = "Сущность"
         verbose_name_plural = "Сущности"
+
+    def __str__(self):
+        return self.name

@@ -9,6 +9,8 @@ class ConnectionUnitType(models.Model):
         verbose_name = "Тип интерфейса"
         verbose_name_plural = "Типы интерфейсов"
 
+    def __str__(self):
+        return self.name
 
 class ConnectionUnit(models.Model):
     type = models.ForeignKey(ConnectionUnitType, on_delete=models.CASCADE, verbose_name="Тип")

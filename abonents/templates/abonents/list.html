@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Абоненты</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Имя</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата подключения</th>
+            <th scope="col">Дата отключения</th>
+            <th scope="col">Статус</th>
+
+          </tr>
+        </thead>
+        <tbody>
+            {% for abonent in abonents %}
+                <tr>
+                    <td><a href="{{ abonent.get_absolute_url }}">{{ abonent.name }}</a></td>
+                    <td>{{ abonent.type }}</td>
+                    <td>{{ abonent.created_date }}</td>
+                    <td>{{ abonent.enable_date }}</td>
+                    <td>{{ abonent.disable_date }}</td>
+                    <td>{{ abonent.object_status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+    <h2>Создать нового абонента</h2>
+
+      <form method="post">{% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Создать">
+    </form>
+{% endblock %}
