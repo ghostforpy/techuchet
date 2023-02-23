@@ -141,6 +141,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "login_required.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -282,3 +283,9 @@ SOCIALACCOUNT_FORMS = {"signup": "techuchet.users.forms.UserSocialSignupForm"}
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# https://github.com/CleitonDeLima/django-login-required-middleware
+LOGIN_REQUIRED_IGNORE_PATHS = [
+    r'/accounts/login/$',
+    r'/accounts/signup/$',
+    r'/admin/',
+]
