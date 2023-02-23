@@ -46,6 +46,7 @@ class Node(models.Model):
         blank=True
     )
     ip_address = models.GenericIPAddressField("IP адрес", null=True, blank=True)
+    parent = models.ForeignKey('self', models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = "Логическое устройство"

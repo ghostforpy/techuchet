@@ -4,6 +4,8 @@ from django.urls import reverse
 # Create your models here.
 
 
+
+
 class ServiceType(models.Model):
     name = models.CharField('Наименование', max_length=16, unique=True)
 
@@ -14,14 +16,41 @@ class ServiceType(models.Model):
     def __str__(self):
         return self.name
 
+
+class ServiceName(models.Model):
+    name = models.CharField('Наименование', max_length=16, unique=True)
+    type = models.ForeignKey(ServiceType, on_delete=models.CASCADE, verbose_name="Тип")
+    class Meta:
+        verbose_name = "Имя сервиса"
+        verbose_name_plural = "Имена сервисов"
+
+    def __str__(self):
+        return self.name
+
+
 class Service(models.Model):
-    name = models.CharField('Наименование', max_length=25, unique=True)
+    name = models.ForeignKey(ServiceName, on_delete=models.CASCADE)
     type = models.ForeignKey(ServiceType, on_delete=models.CASCADE, verbose_name="Тип")
     created_date = models.DateField('Дата создания', auto_now_add=True)
+    change_date = models.DateField('Дата изменения', auto_now=True)
     abonent = models.ForeignKey(
         'abonents.Abonent',
         on_delete=models.CASCADE,
         verbose_name='Абонент',
+        null=True,
+        blank=True
+    )
+    entity = models.ForeignKey(
+        "entities.entity",
+        on_delete=models.CASCADE, 
+        verbose_name="Сущность",
+        null=True,
+        blank=True
+    )
+    status = models.ForeignKey(
+        'abonents.objectstatus',
+        on_delete=models.CASCADE,
+        verbose_name="Статус",
         null=True,
         blank=True
     )

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Max
 # Create your models here.
 
 class ConnectionUnitType(models.Model):
@@ -12,6 +12,12 @@ class ConnectionUnitType(models.Model):
     def __str__(self):
         return self.name
 
+
+def autoincrement():
+    last = ConnectionUnit.objects.all().aggregate(max=Max('number'))
+    return last['max'] + 1 if last['max'] else 1
+
+
 class ConnectionUnit(models.Model):
     type = models.ForeignKey(ConnectionUnitType, on_delete=models.CASCADE, verbose_name="Тип")
     status = models.ForeignKey(
@@ -20,6 +26,12 @@ class ConnectionUnit(models.Model):
         verbose_name="Статус",
         null=True,
         blank=True
+    )
+    number = models.IntegerField(
+        'Порядковый номер интерфейса',
+        blank=True, 
+        null=True,
+        default=autoincrement
     )
     node = models.ForeignKey(
         'nodes.Node',
@@ -35,6 +47,18 @@ class ConnectionUnit(models.Model):
         null=True,
         blank=True
     )
+    rate = models.FloatField('Пропускная способность', null=True, blank=True)
+    entity = models.ForeignKey(
+        "entities.entity",
+        on_delete=models.CASCADE, 
+        verbose_name="Сущность",
+        null=True,
+        blank=True
+    )
+
     class Meta:
         verbose_name = "Интерфейс"
         verbose_name_plural = "Интерфейсы"
+
+    def __str__(self):
+        return f'{self.type} № {self.number}'
