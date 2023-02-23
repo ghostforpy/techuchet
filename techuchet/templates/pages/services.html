@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col">
+            <a href="{% url 'service-list'%}"><button class="home-btns align-middle btn btn-secondary btn-lg active w-100" role="button" aria-pressed="true">Услуги</button></a>
+        </div>
+        <div class="col">
+            <a href="{% url 'abonent-list'%}"><button class="home-btns align-middle btn btn-secondary btn-lg active w-100" role="button" aria-pressed="true">Абоненты</button></a>
+        </div>
+    </div>
+{% endblock content %}
