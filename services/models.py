@@ -20,6 +20,7 @@ class ServiceType(models.Model):
 class ServiceName(models.Model):
     name = models.CharField('Наименование', max_length=16, unique=True)
     type = models.ForeignKey(ServiceType, on_delete=models.CASCADE, verbose_name="Тип")
+
     class Meta:
         verbose_name = "Имя сервиса"
         verbose_name_plural = "Имена сервисов"
