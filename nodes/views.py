@@ -6,11 +6,6 @@ from django.db.models import Q
 from .models import Node
 
 
-
-# class NodeListView(ListView):
-#     model = Node
-#     template_name = "nodes/list.html"
-#     context_object_name = 'nodes'
 create_and_update_fileds = [
     'name', 
     'type', 
