@@ -45,3 +45,4 @@ class UpdateAbonentView(UpdateView):
     model = Abonent
     template_name = "abonents/update.html"
     fields = create_and_update_fileds
+    success_url = '/abonents/'

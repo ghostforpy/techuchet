@@ -6,7 +6,11 @@
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
-      <button type="submit" class="btn btn-primary">Обновить</button>
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Обновить</button>
+        <a href="{% url 'connection-list'%}" role="button" class="btn btn-secondary">К списку интерфейсов</a>
+      </div>
+
     </form>
     
 {% endblock %}

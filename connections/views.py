@@ -43,3 +43,4 @@ class UpdateConnectionUnitView(UpdateView):
     model = ConnectionUnit
     template_name = "connections/update.html"
     fields = create_and_update_fileds
+    success_url = '/connections/'

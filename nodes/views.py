@@ -49,6 +49,7 @@ class UpdateNodeView(UpdateView):
     model = Node
     template_name = "nodes/update.html"
     fields = create_and_update_fileds
+    success_url = '/nodes/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
