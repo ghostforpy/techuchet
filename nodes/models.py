@@ -2,6 +2,16 @@ from django.db import models
 from django.urls import reverse
 
 # Create your models here.
+class NodeName(models.Model):
+    name = models.CharField('Наименование', max_length=16, unique=True)
+
+    class Meta:
+        verbose_name = "Имя оборудования"
+        verbose_name_plural = "Имена оборудования"
+
+    def __str__(self):
+        return self.name
+
 
 class NodeType(models.Model):
     name = models.CharField('Наименование', max_length=16, unique=True)
@@ -13,11 +23,12 @@ class NodeType(models.Model):
     def __str__(self):
         return self.name
 
+
 class Node(models.Model):
-    name = models.CharField(
-        'Наименование',
-        unique=True,
-        max_length=25, 
+    name = models.ForeignKey(
+        NodeName, 
+        on_delete=models.CASCADE, 
+        verbose_name="Наименование",
         null=True,
         blank=True
     )
@@ -38,7 +49,7 @@ class Node(models.Model):
         null=True,
         blank=True
     )
-    buiilding = models.ForeignKey(
+    building = models.ForeignKey(
         'buildings.building',
         on_delete=models.CASCADE,
         verbose_name="Здание",
@@ -46,7 +57,7 @@ class Node(models.Model):
         blank=True
     )
     ip_address = models.GenericIPAddressField("IP адрес", null=True, blank=True)
-    parent = models.ForeignKey('self', models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey('self', models.CASCADE, null=True, blank=True, verbose_name='Родительское устройство')
 
     class Meta:
         verbose_name = "Логическое устройство"
@@ -54,3 +65,6 @@ class Node(models.Model):
 
     def get_absolute_url(self):
         return reverse('node-detail', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return f'{self.name.name} {self.ip_address}'

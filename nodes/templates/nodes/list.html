@@ -1,40 +1,79 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
+<form action="." method="get">
+  <div class="input-group mb-3">
+    <input id="query" type="text" class="form-control" placeholder="Поиск по атрибутам" aria-label="search" aria-describedby="basic-addon2" name="query" {% if query %}value="{{ query }}"{% endif %}>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Поиск</button>
+    </div>
+  </div>
+</form>
+
     <h2>Оборудование</h2>
     <table class="table">
         <thead>
           <tr>
             <th scope="col">Наименование</th>
             <th scope="col">Тип</th>
+            <th scope="col">Здание</th>
             <th scope="col">IP</th>
+            <th scope="col">Статус</th>
             <th scope="col">Дата создания</th>
             <th scope="col">Дата изменения</th>
-            <th scope="col">Сущность</th>
-            <th scope="col">Статус</th>
-            <th scope="col">Здание</th>
-
+            <th scope="col">Родительское устройство</th>
+            <th scope="col">Населенный пункт</th>
           </tr>
         </thead>
         <tbody>
             {% for node in nodes %}
                 <tr>
-                  <td><a href="{{ node.get_absolute_url }}">{{ node.name }}</a></td>
+                  <td><a href="{{ node.get_absolute_url }}">{{ node.name.name }}</a></td>
                     <td>{{ node.type }}</td>
+                    <td>{{ node.buiilding }}</td>
                     <td>{{ node.ip_address }}</td>
+                    <td>{{ node.status }}</td>
                     <td>{{ node.created_date }}</td>
                     <td>{{ node.change_date }}</td>
-                    <td>{{ node.entity }}</td>
-                    <td>{{ node.status }}</td>
-                    <td>{{ node.buiilding }}</td>
+                    <td>
+                      {% if node.parrent %}
+                        <a href="{{ node.parrent.get_absolute_url }}">{{ node.parrent.ip_address }}</a>
+                      {% endif %}
+                    </td>
+                    <td>{{ node.buiilding.region }}</td>
                 </tr>
             {% endfor %}
         </tbody>
       </table>
-      <h2>Создать новое оборудование</h2>
+      <button type="button" class="w-100 btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Добавить оборудование
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Добавить оборудование</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-      <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Создать">
-    </form>
+
+            <div class="modal-body">
+              <form method="post" action=".">
+                {% csrf_token %}
+                {{ form|crispy }}
+              </form>
+            </div>
+
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 {% endblock %}

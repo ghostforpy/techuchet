@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h2>Оборудование {{ object.id }}</h2>
-    <form method="post">{% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Обновить">
-  </form>
+    <form method="post" action=".">
+      {% csrf_token %}
+      {{ form|crispy }}
+    </form>
+    <button type="submit" class="btn btn-primary">Обновить</button>
 {% endblock %}
