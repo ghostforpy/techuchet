@@ -3,12 +3,12 @@
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.db.models import Q
 
-from .models import Node
+from .models import Node, NodeName
 
 
 create_and_update_fileds = [
-    'name', 
     'type', 
+    'name', 
     'status', 
     # 'entity', 
     'building', 
@@ -40,6 +40,7 @@ class ListAndCreateNodeView(CreateView):
                 Q(building__street__icontains=query) |
                 Q(building__region__name__icontains=query)
             )
+        context['node_names'] = NodeName.objects.select_related('type').all()
         context["nodes"] = qs
         return context
 
@@ -48,3 +49,8 @@ class UpdateNodeView(UpdateView):
     model = Node
     template_name = "nodes/update.html"
     fields = create_and_update_fileds
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['node_names'] = NodeName.objects.select_related('type').all()
+        return context

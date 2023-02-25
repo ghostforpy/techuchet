@@ -6,7 +6,8 @@
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Обновить</button>
     </form>
-    <button type="submit" class="btn btn-primary">Обновить</button>
+    
     {% include 'services/service_name_js.html' %}
 {% endblock %}
