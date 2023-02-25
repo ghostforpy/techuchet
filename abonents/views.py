@@ -1,41 +1,47 @@
 # from django.shortcuts import render
 # from django.views.generic import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView
+from django.db.models import Q
+
 from .models import Abonent
-# from .forms import AbonentForm
 
 
-# class AbonentListView(ListView):
-#     model = Abonent
-#     template_name = "abonents/list.html"
-#     context_object_name = 'abonents'
-
-
-# class AbonentCreateView(FormView):
-#     template_name = 'abonents/list.html'
-#     form_class = AbonentForm
-#     success_url = '/abonents/'
-
-
-# class AbonentCreateView(CreateView):
-#     model = Abonent
-#     fields = ['created_date']
-#     template_name = "abonents/list.html"
+create_and_update_fileds = [
+    'name', 
+    'type', 
+    'phone', 
+    'object_status', 
+    'contract', 
+]
 
 class ListAndCreateAbonentView(CreateView):
     model = Abonent
     template_name = "abonents/list.html"
-    fields = ['name' ,'type', 'object_status']
+    fields = create_and_update_fileds
     success_url = '/abonents/'
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["abonents"] = self.model.objects.all()
+        qs = self.model.objects.all()
+        if self.request.GET.get('query'):
+            query = self.request.GET.get('query')
+            context["query"] = query
+            qs = qs.filter(
+                Q(name__name__icontains=query) |
+                Q(type__name__icontains=query) |
+                Q(object_status__name__icontains=query) |
+                Q(ip_address__icontains=query) |
+                Q(parent__name__name__icontains=query) |
+                Q(building__type__name__icontains=query) |
+                Q(building__street__icontains=query) |
+                Q(building__region__name__icontains=query)
+            )
+        context["abonents"] = qs
         return context
 
 
 class UpdateAbonentView(UpdateView):
     model = Abonent
     template_name = "abonents/update.html"
-    fields = ['name' ,'type', 'object_status']
+    fields = create_and_update_fileds
