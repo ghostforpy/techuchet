@@ -29,7 +29,7 @@ class ServiceName(models.Model):
 
 
 class Service(models.Model):
-    name = models.ForeignKey(ServiceName, on_delete=models.CASCADE)
+    name = models.ForeignKey(ServiceName, on_delete=models.CASCADE, verbose_name="Наименование")
     type = models.ForeignKey(ServiceType, on_delete=models.CASCADE, verbose_name="Тип")
     created_date = models.DateField('Дата создания', auto_now_add=True)
     change_date = models.DateField('Дата изменения', auto_now=True)

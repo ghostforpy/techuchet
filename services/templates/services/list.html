@@ -1,14 +1,25 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
+<form action="." method="get">
+  <div class="input-group mb-3">
+    <input id="query" type="text" class="form-control" placeholder="Поиск по атрибутам" aria-label="search" aria-describedby="basic-addon2" name="query" {% if query %}value="{{ query }}"{% endif %}>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Поиск</button>
+    </div>
+  </div>
+</form>
     <h2>Услуги</h2>
     <table class="table">
         <thead>
           <tr>
             <th scope="col">Наименование</th>
             <th scope="col">Тип</th>
-            <th scope="col">Дата создания</th>
             <th scope="col">Абонент</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата редактирования</th>
 
           </tr>
         </thead>
@@ -17,17 +28,41 @@
                 <tr>
                   <td><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></td>
                   <td>{{ service.type }}</td>
-                    <td>{{ service.created_date }}</td>
-                    <td>{{ service.abonent }}</td>
+                  <td><a href="{{ service.abonent.get_absolute_url }}">{{ service.abonent }}</a></td>
+                  <td>{{ service.status }}</td>
+                  <td>{{ service.created_date }}</td>
+                  <td>{{ service.change_date }}</td>
                 </tr>
             {% endfor %}
         </tbody>
       </table>
+      <button type="button" class="w-100 btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Добавить услугу
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Добавить оборудование</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-      <h2>Создать новую услугу</h2>
 
-      <form method="post">{% csrf_token %}
-        {{ form.as_table }}
-        <input type="submit" value="Создать">
-    </form>
+            <div class="modal-body">
+              <form method="post" action=".">
+                {% csrf_token %}
+                {{ form|crispy }}
+              </form>
+            </div>
+
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}
