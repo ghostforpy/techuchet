@@ -1,0 +1,38 @@
+<script>
+    var serviceNames = new Array();
+    {% for i in service_names %}
+    serviceNames.push({'name':'{{ i.name }}', 'type_id':'{{ i.type.id }}', 'id':'{{ i.id }}'});
+    {% endfor %}
+    const type_select = document.getElementById("id_type");
+    const name_select = document.getElementById("id_name");
+    function clearNameSelect(){
+      while (name_select.firstChild) {
+        name_select.removeChild(name_select.lastChild);
+      }
+      let optionLast = document.createElement('option');
+        optionLast.innerHTML = '----------';
+        name_select.append(optionLast);
+    }
+    function changeNameSelect(selected = null){
+      let serviceFilteredNames = serviceNames.filter(item => item.type_id === type_select.value)
+      clearNameSelect();
+      serviceFilteredNames.forEach(function(item, index, array) {
+        let optionLast = document.createElement('option');
+        optionLast.value = item.type_id;
+        optionLast.innerHTML = item.name;
+        if (selected && selected === item.id){
+          optionLast.selected = true
+        }
+        name_select.append(optionLast);
+      }
+      )
+    }
+    if (type_select.value){
+      changeNameSelect(name_select.value)
+    } else {
+      clearNameSelect()
+    }
+    type_select.onchange = function() {
+      changeNameSelect()
+    };
+</script>
