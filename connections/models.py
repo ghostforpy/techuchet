@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models import Max
+from django.urls import reverse
+
 # Create your models here.
 
 class ConnectionUnitType(models.Model):
@@ -62,3 +64,6 @@ class ConnectionUnit(models.Model):
 
     def __str__(self):
         return f'{self.type} № {self.number}'
+
+    def get_absolute_url(self):
+        return reverse('connection-detail', kwargs={'pk': self.pk})
