@@ -28,15 +28,12 @@ class ListAndCreateConnectionUnitView(CreateView):
             query = self.request.GET.get('query')
             context["query"] = query
             qs = qs.filter(
-                Q(name__name__icontains=query) |
                 Q(type__name__icontains=query) |
-                Q(entity__name__icontains=query) |
                 Q(status__name__icontains=query) |
-                Q(ip_address__icontains=query) |
-                Q(parent__name__name__icontains=query) |
-                Q(building__type__name__icontains=query) |
-                Q(building__street__icontains=query) |
-                Q(building__region__name__icontains=query)
+                Q(number=query) |
+                Q(service__name__name__icontains=query) |
+                Q(node__ip_address__icontains=query) |
+                Q(node__name__name__icontains=query)
             )
         context["connections"] = qs
         return context
