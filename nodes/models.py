@@ -1,17 +1,6 @@
 from django.db import models
 from django.urls import reverse
 
-# Create your models here.
-class NodeName(models.Model):
-    name = models.CharField('Наименование', max_length=16, unique=True)
-
-    class Meta:
-        verbose_name = "Имя оборудования"
-        verbose_name_plural = "Имена оборудования"
-
-    def __str__(self):
-        return self.name
-
 
 class NodeType(models.Model):
     name = models.CharField('Наименование', max_length=16, unique=True)
@@ -19,6 +8,24 @@ class NodeType(models.Model):
     class Meta:
         verbose_name = "Тип оборудования"
         verbose_name_plural = "Типы оборудования"
+
+    def __str__(self):
+        return self.name
+
+
+class NodeName(models.Model):
+    name = models.CharField('Наименование', max_length=16, unique=True)
+    type = models.ForeignKey(
+        NodeType, 
+        on_delete=models.CASCADE, 
+        verbose_name="Тип",
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = "Имя оборудования"
+        verbose_name_plural = "Имена оборудования"
 
     def __str__(self):
         return self.name
