@@ -40,6 +40,13 @@ class Abonent(models.Model):
         blank=True,
         null=True
     )
+    building = models.ForeignKey(
+        'buildings.building',
+        on_delete=models.CASCADE,
+        verbose_name="Здание",
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = "Абонент"
