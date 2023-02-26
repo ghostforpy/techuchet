@@ -68,7 +68,7 @@ class ListAndCreateAbonentView(CreateView):
             page = self.request.GET.get('page')
             if page.isdigit():
                 page = int(page)
-        paginator = Paginator(qs, 1)
+        paginator = Paginator(qs, 20)
         context['abonents_pages'] = paginator.num_pages
         context["abonents"] = paginator.get_page(page)
         context["object_statuses"] = ObjectStatus.objects.all()

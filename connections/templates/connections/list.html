@@ -84,22 +84,22 @@
               <ul class="pagination justify-content-center">
                   {% if connections.has_previous %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.previous_page_number}}" aria-label="Previous">
+                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.previous_page_number}}" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Предыдущая</span>
                           </a>
                       </li>
                   {% endif %}
                   {% if connections.has_previous %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.previous_page_number}}">{{connections.previous_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.previous_page_number}}">{{connections.previous_page_number}}</a></li>
                   {% endif %}
-                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.number}}">{{connections.number}}</a></li>
+                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.number}}">{{connections.number}}</a></li>
                   {% if connections.has_next %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.next_page_number}}">{{connections.next_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.next_page_number}}">{{connections.next_page_number}}</a></li>
                   {% endif %}
                   {% if connections.has_next %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.next_page_number}}" aria-label="Next">
+                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.next_page_number}}" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Следующая</span>
                           </a>

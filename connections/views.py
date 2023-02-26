@@ -67,7 +67,7 @@ class ListAndCreateConnectionUnitView(CreateView):
             page = self.request.GET.get('page')
             if page.isdigit():
                 page = int(page)
-        paginator = Paginator(qs, 1)
+        paginator = Paginator(qs, 20)
         context['connections_pages'] = paginator.num_pages
         context["service_names"] = Service.objects.select_related('abonent').all()
         context["connections"] = paginator.get_page(page)
