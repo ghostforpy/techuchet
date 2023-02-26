@@ -1,14 +1,14 @@
-# from django.shortcuts import render
-# from django.views.generic import ListView
+from datetime import datetime
+
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic.list import ListView
-
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 
-from abonents.models import Abonent
+from abonents.models import Abonent, ObjectStatus
 
-from .models import Service, ServiceName
+from .models import Service, ServiceName, ServiceType
 
 
 
@@ -34,21 +34,59 @@ class ListAndCreateServiceView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         qs = self.model.objects.all()
-        if self.request.GET.get('query'):
-            query = self.request.GET.get('query')
-            context["query"] = query
-            qs = qs.filter(
-                Q(name__name__icontains=query) |
-                Q(type__name__icontains=query) |
-                Q(entity__name__icontains=query) |
-                Q(status__name__icontains=query) |
-                Q(abonent__name__icontains=query) |
-                Q(abonent__phone__icontains=query) |
-                Q(abonent__contract__icontains=query)
-            )
+
+        if self.request.GET.get('created_date'):
+            created_date = self.request.GET.get('created_date')
+            try:
+                qs = qs.filter(
+                    created_date=datetime.strptime(created_date, "%Y-%m-%d")
+                )
+                context['created_date'] = created_date
+            except (ValueError, TypeError):
+                pass
+        if self.request.GET.get('change_date'):
+            change_date = self.request.GET.get('change_date')
+            try:
+                qs = qs.filter(
+                    change_date=datetime.strptime(change_date, "%Y-%m-%d")
+                )
+                context['change_date'] = change_date
+            except (ValueError, TypeError):
+                pass
+        if self.request.GET.get('object_status'):
+            object_status = self.request.GET.get('object_status')
+            if object_status.isdigit():
+                qs = qs.filter(status__id=int(object_status))
+                context['select_object_status'] = int(object_status)
+        if self.request.GET.get('service_name'):
+            service_name = self.request.GET.get('service_name')
+            if service_name.isdigit():
+                qs = qs.filter(name__id=int(service_name))
+                context['select_service_name'] = int(service_name)
+        if self.request.GET.get('type'):
+            _type = self.request.GET.get('type')
+            if _type.isdigit():
+                qs = qs.filter(type__id=int(_type))
+                context['select_type'] = int(_type)
+        if self.request.GET.get('abonent'):
+            abonent = self.request.GET.get('abonent')
+            if abonent.isdigit():
+                qs = qs.filter(abonent__id=int(abonent))
+                context['select_abonent'] = int(abonent)
+
+        page = 1
+        if self.request.GET.get('page'):
+            page = self.request.GET.get('page')
+            if page.isdigit():
+                page = int(page)
+        paginator = Paginator(qs, 20)
+        context['services_pages'] = paginator.num_pages
+        context["services"] = paginator.get_page(page)
+
         context['service_names'] = ServiceName.objects.select_related('type').all()
+        context['service_types'] = ServiceType.objects.all()
         context["abonent_names"] = Abonent.objects.all()
-        context["services"] = qs
+        context["object_statuses"] = ObjectStatus.objects.all()
         return context
 
 

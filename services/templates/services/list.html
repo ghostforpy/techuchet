@@ -2,14 +2,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form action="." method="get">
+{% comment %} <form action="." method="get">
   <div class="input-group mb-3">
     <input id="query" type="text" class="form-control" placeholder="Поиск по атрибутам" aria-label="search" aria-describedby="basic-addon2" name="query" {% if query %}value="{{ query }}"{% endif %}>
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="submit">Поиск</button>
     </div>
   </div>
-</form>
+</form> {% endcomment %}
     <h2>Услуги</h2>
     <table class="table">
         <thead>
@@ -34,6 +34,47 @@
                   <td>{{ service.change_date }}</td>
                 </tr>
             {% endfor %}
+            <form action=".">
+              <tr class="form-table-search-tr">
+                <td>
+                  <select name="service_name" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for service_name in service_names %}
+                      <option value="{{service_name.id}}" {% if select_service_name == service_name.id %}selected{% endif %}>{{service_name.name}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="type" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for type in service_types %}
+                      <option value="{{type.id}}" {% if select_type == type.id %}selected{% endif %}>{{type.name}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="abonent" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for abonent in abonent_names %}
+                      <option value="{{abonent.id}}" {% if select_abonent == abonent.id %}selected{% endif %}>{{abonent.name}} ({{abonent.contract}})</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="object_status" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for object_status in object_statuses %}
+                      <option value="{{object_status.id}}" {% if select_object_status == object_status.id %}selected{% endif %}>{{object_status.name}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td><input type="date" {% if created_date %}value="{{created_date}}"{% endif %} name="created_date" class="form-control form-table-search-input"></input></td>
+                <td><input type="date" {% if change_date %}value="{{change_date}}"{% endif %} name="change_date" class="form-control form-table-search-input"></input></td>
+              </tr>
+              <tr>
+                <td colspan="6"><button class="w-100 btn btn-outline-secondary btn-sm" type="submit">Поиск</button></td>
+              </tr>
+            </form>
         </tbody>
       </table>
       <button type="button" class="w-100 btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
