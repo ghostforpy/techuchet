@@ -18,7 +18,7 @@
       clearNameSelect();
       serviceFilteredNames.forEach(function(item, index, array) {
         let optionLast = document.createElement('option');
-        optionLast.value = item.type_id;
+        optionLast.value = item.id;
         optionLast.innerHTML = item.name;
         if (selected && selected === item.id){
           optionLast.selected = true

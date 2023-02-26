@@ -30,17 +30,17 @@
                 <tr>
                   <td><a href="{{ node.get_absolute_url }}">{{ node.name.name }}</a></td>
                     <td>{{ node.type }}</td>
-                    <td>{{ node.buiilding }}</td>
+                    <td>{{ node.building }}</td>
                     <td>{{ node.ip_address }}</td>
                     <td>{{ node.status }}</td>
                     <td>{{ node.created_date }}</td>
                     <td>{{ node.change_date }}</td>
                     <td>
-                      {% if node.parrent %}
-                        <a href="{{ node.parrent.get_absolute_url }}">{{ node.parrent.ip_address }}</a>
+                      {% if node.parent %}
+                        <a href="{{ node.parent.get_absolute_url }}">{{ node.parent.ip_address }}</a>
                       {% endif %}
                     </td>
-                    <td>{{ node.buiilding.region }}</td>
+                    <td>{{ node.building.region }}</td>
                 </tr>
             {% endfor %}
         </tbody>

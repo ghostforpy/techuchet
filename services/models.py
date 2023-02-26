@@ -61,7 +61,7 @@ class Service(models.Model):
         verbose_name_plural = "Сервисы"
 
     def __str__(self):
-        return self.name.name
+        return f'{self.name.name} {self.abonent} ({self.abonent.contract})'
 
     def get_absolute_url(self):
         return reverse('service-detail', kwargs={'pk': self.pk})
