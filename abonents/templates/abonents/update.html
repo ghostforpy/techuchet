@@ -10,5 +10,14 @@
         <a href="{% url 'abonent-list'%}" role="button" class="btn btn-secondary">К списку абонентов</a>
       </div>
     </form>
+    <script>
+      
+    const disableDateField = document.getElementById("id_disable_date");
     
+    if (disableDateField.value) {
+      let v = disableDateField.value.split('.')
+      disableDateField.value = `${v[2]}-${v[1]}-${v[0]}`
+    }
+    disableDateField.type = 'date'
+    </script>
 {% endblock %}

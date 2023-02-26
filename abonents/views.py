@@ -54,6 +54,15 @@ class ListAndCreateAbonentView(CreateView):
                 context['created_date'] = created_date
             except (ValueError, TypeError):
                 pass
+        if self.request.GET.get('disable_date'):
+            disable_date = self.request.GET.get('disable_date')
+            try:
+                qs = qs.filter(
+                    disable_date=datetime.strptime(disable_date, "%Y-%m-%d")
+                )
+                context['disable_date'] = disable_date
+            except (ValueError, TypeError):
+                pass
         if self.request.GET.get('change_date'):
             change_date = self.request.GET.get('change_date')
             try:
@@ -79,5 +88,5 @@ class ListAndCreateAbonentView(CreateView):
 class UpdateAbonentView(UpdateView):
     model = Abonent
     template_name = "abonents/update.html"
-    fields = create_and_update_fileds
+    fields = create_and_update_fileds + ['disable_date']
     success_url = '/abonents/'
