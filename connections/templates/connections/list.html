@@ -54,7 +54,7 @@
                 
                   {% csrf_token %}
                   {{ form|crispy }}
-               
+                  {% include 'connections/name_service_list.html' %}
               </div>
 
 
@@ -66,6 +66,8 @@
           </div>
         </div>
       </div>
+
+      {% include 'connections/service_name_js.html' %}
 
 
 {% endblock %}

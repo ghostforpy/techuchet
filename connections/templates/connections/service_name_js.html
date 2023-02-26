@@ -1,0 +1,51 @@
+<script>
+    
+    var serviceNames = new Array();
+    {% for i in service_names %}
+    serviceNames.push({
+      'name':'{{ i.name }} {{ i.abonent }} ({{ i.abonent.contract }})', 
+      'id':'{{ i.id }}'
+    });
+    {% endfor %}
+
+    const search_select = document.getElementById("searcheslect");
+    const dropDownMenu = document.getElementById("dropDownMenu");
+    const service_select = document.getElementById("id_service");
+    service_select.parentNode.classList.add('d-none');
+
+    function clearDropDownMenu(){
+      while (dropDownMenu.firstChild) {
+        dropDownMenu.removeChild(dropDownMenu.lastChild);
+      }
+    }
+    if (service_select.value){
+      let serviceNamesitem = serviceNames.find(item => item.id === service_select.value);
+      search_select.value = serviceNamesitem.name;
+    }
+    var filteredServiceNames = new Array()
+    search_select.oninput = function() {
+      filteredServiceNames = serviceNames.filter(item => item.name.indexOf(search_select.value) !== -1);
+      clearDropDownMenu();
+      filteredServiceNames.forEach(function(item, index, array) {
+        let liLast = document.createElement('li');
+        let aLast = document.createElement('a');
+        aLast.classList.add('dropdown-item')
+        aLast.innerHTML = item.name;
+        aLast.onclick = function() {
+          search_select.value = item.name;
+          service_select.value = item.id;
+          dropDownMenu.classList.remove('show');
+        };
+        liLast.append(aLast);
+        dropDownMenu.append(liLast);
+
+      }
+      )
+      dropDownMenu.classList.add('show');
+    };
+    document.onclick = function (e) {
+        if (e.target.className != "dropdown-menu") {
+            dropDownMenu.classList.remove('show');
+        };
+    };
+  </script>
