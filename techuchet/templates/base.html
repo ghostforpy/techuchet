@@ -42,7 +42,7 @@
           <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'home' %}">Технический учёт</a>
+          <a class="navbar-brand" href="{% url 'home' %}">Технический Учёт</a>
 
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -56,20 +56,20 @@
                 <a class="nav-link" href="{% url 'node-list' %}">Оборудование</a>
               </li> {% endcomment %}
               {% if request.user.is_authenticated %}
-                <li class="nav-item">
+                {% comment %} <li class="nav-item">
                   {# URL provided by django-allauth/account/urls.py #}
                   <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% translate "My Profile" %}</a>
-                </li>
+                </li> {% endcomment %}
                 <li class="nav-item">
                   {# URL provided by django-allauth/account/urls.py #}
                   <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
                 </li>
               {% else %}
                 {% if ACCOUNT_ALLOW_REGISTRATION %}
-              <li class="nav-item">
+              {% comment %} <li class="nav-item">
                 {# URL provided by django-allauth/account/urls.py #}
                 <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-              </li>
+              </li> {% endcomment %}
               {% endif %}
                 <li class="nav-item">
                   {# URL provided by django-allauth/account/urls.py #}
