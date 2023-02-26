@@ -36,7 +36,7 @@
                     <select name="type" class="form-control form-table-search-input">
                       <option value="">-------------</option>
                       {% for type in abonent_types %}
-                        <option value="{{type.id}}" {% if type == type.id %}selected{% endif %}>{{type.name}}</option>
+                        <option value="{{type.id}}" {% if select_type == type.id %}selected{% endif %}>{{type.name}}</option>
                       {% endfor %}
                     </select>
                   </td>
@@ -44,7 +44,7 @@
                     <select name="object_status" class="form-control form-table-search-input">
                       <option value="">-------------</option>
                       {% for object_status in object_statuses %}
-                        <option value="{{object_status.id}}" {% if object_status == type.id %}selected{% endif %}>{{object_status.name}}</option>
+                        <option value="{{object_status.id}}" {% if select_object_status == object_status.id %}selected{% endif %}>{{object_status.name}}</option>
                       {% endfor %}
                     </select>
                   </td>
@@ -64,22 +64,22 @@
                 <ul class="pagination justify-content-center">
                     {% if abonents.has_previous %}
                         <li class="page-item">
-                            <a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{type}}&object_status={{object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.previous_page_number}}" aria-label="Previous">
+                            <a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.previous_page_number}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Предыдущая</span>
                             </a>
                         </li>
                     {% endif %}
                     {% if goods.has_previous %}
-                        <li class="page-item"><a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{type}}&object_status={{object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.previous_page_number}}">{{abonents.previous_page_number}}</a></li>
+                        <li class="page-item"><a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.previous_page_number}}">{{abonents.previous_page_number}}</a></li>
                     {% endif %}
-                    <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{type}}&object_status={{object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.number}}">{{abonents.number}}</a></li>
+                    <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.number}}">{{abonents.number}}</a></li>
                     {% if abonents.has_next %}
-                        <li class="page-item"><a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{type}}&object_status={{object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.next_page_number}}">{{abonents.next_page_number}}</a></li>
+                        <li class="page-item"><a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.next_page_number}}">{{abonents.next_page_number}}</a></li>
                     {% endif %}
                     {% if abonents.has_next %}
                         <li class="page-item">
-                            <a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{type}}&object_status={{object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.next_page_number}}" aria-label="Next">
+                            <a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.next_page_number}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Следующая</span>
                             </a>

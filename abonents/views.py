@@ -39,12 +39,12 @@ class ListAndCreateAbonentView(CreateView):
             _type = self.request.GET.get('type')
             if _type.isdigit():
                 qs = qs.filter(type__id=int(_type))
-                context['type'] = _type
+                context['select_type'] = int(_type)
         if self.request.GET.get('object_status'):
             object_status = self.request.GET.get('object_status')
             if object_status.isdigit():
                 qs = qs.filter(object_status__id=int(object_status))
-                context['object_status'] = object_status
+                context['select_object_status'] = int(object_status)
         if self.request.GET.get('created_date'):
             created_date = self.request.GET.get('created_date')
             try:
