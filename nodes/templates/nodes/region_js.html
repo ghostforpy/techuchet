@@ -1,0 +1,70 @@
+<script>
+  var regionNames = new Array();
+  {% for i in regions %}
+    regionNames.push({'name':'{{ i.name }}', 'id':{{ i.id }}});
+  {% endfor %}
+  {% if object %}
+    let selectRegionId = {{ object.building.region.id }}
+    let selectedBuildind = {{ object.building.id }}
+  {% else %}
+    let selectRegionId = null
+    let selectedBuildind = null
+  {% endif %}
+  let select = document.createElement('select');
+  select.id = "id_region"
+  select.classList.add('select')
+  select.classList.add('form-select')
+  select.innerHTML = '<option>---------</option>';
+  regionNames.forEach(function(item, index, array) {
+    let optionLast = document.createElement('option');
+        optionLast.value = item.id;
+        optionLast.innerHTML = item.name;
+        if (selectRegionId && selectRegionId === item.id){
+          optionLast.selected = true
+        }
+        select.append(optionLast);
+  })
+  let div = document.createElement('div');
+  div.classList.add('mb-3')
+  div.id = "div_id_region"
+  div.innerHTML = '<label for="id_region" class="form-label">Регион</label>';
+  div.append(select)
+  const divIbBuilding = document.getElementById("div_id_building");
+  divIbBuilding.before(div)
+
+  var buildings = new Array();
+  {% for i in buildings %}
+    buildings.push({'name':'{{ i }}', 'id':{{ i.id }}, 'region_id': '{{ i.region.id }}'});
+  {% endfor %}
+  const selectBuilding = document.getElementById("id_building");
+  
+  function clearBuildingSelect(){
+    while (selectBuilding.firstChild) {
+      selectBuilding.removeChild(selectBuilding.lastChild);
+    }
+    selectBuilding.innerHTML = '<option >---------</option>';
+  }
+  clearBuildingSelect()
+  
+
+  function changeBuildingSelect(selected = null){
+    let buildingsFiltered = buildings.filter(item => item.region_id === select.value)
+    clearBuildingSelect();
+    buildingsFiltered.forEach(function(item, index, array) {
+      let optionLast = document.createElement('option');
+      optionLast.value = item.id;
+      optionLast.innerHTML = item.name;
+      if (selected && selected === item.id){
+        optionLast.selected = true
+      }
+      selectBuilding.append(optionLast);
+    }
+    )
+  }
+  if (selectedBuildind){
+    changeBuildingSelect(selectedBuildind);
+  }
+  select.onchange = function() {
+    changeBuildingSelect()
+  };
+</script>
