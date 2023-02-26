@@ -64,7 +64,7 @@
                 <td>
                   <select name="building" class="form-control form-table-search-input">
                     <option value="">-------------</option>
-                    {% for building in building_types %}
+                    {% for building in buildings %}
                       <option value="{{building.id}}" {% if select_building == building.id %}selected{% endif %}>{{building}}</option>
                     {% endfor %}
                   </select>

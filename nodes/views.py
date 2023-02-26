@@ -92,7 +92,7 @@ class ListAndCreateNodeView(CreateView):
         context["nodes"] = paginator.get_page(page)
 
         context["object_statuses"] = ObjectStatus.objects.all()
-        context['building_types'] = Building.objects.all()
+        context['buildings'] = Building.objects.all()
         context['node_names'] = NodeName.objects.select_related('type').all()
         context["node_types"] = NodeType.objects.all()
         context["parent_nodes"] = Node.objects.all()
