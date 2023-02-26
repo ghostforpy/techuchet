@@ -19,7 +19,7 @@
             {% for abonent in abonents %}
                 <tr>
                     <td><a href="{{ abonent.get_absolute_url }}">{{ abonent.contract }}</a></td>
-                    <td><a href="{{ abonent.get_absolute_url }}">{{ abonent.name }}</a></td>
+                    <td>{{ abonent.name }}</td>
                     <td>{{ abonent.phone }}</td>
                     <td>{{ abonent.type }}</td>
                     <td>{{ abonent.object_status }}</td>
