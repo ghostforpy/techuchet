@@ -70,7 +70,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if goods.has_previous %}
+                    {% if abonents.has_previous %}
                         <li class="page-item"><a class="page-link page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.previous_page_number}}">{{abonents.previous_page_number}}</a></li>
                     {% endif %}
                     <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'abonent-list' %}?contract={{contract}}&name={{name}}&phone={{phone}}&type={{select_type}}&object_status={{select_object_status}}&created_date={{created_date}}&change_date={{change_date}}&page={{abonents.number}}">{{abonents.number}}</a></li>
