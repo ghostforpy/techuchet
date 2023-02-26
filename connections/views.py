@@ -3,6 +3,8 @@
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.db.models import Q
 
+from services.models import Service
+
 from .models import ConnectionUnit
 
 
@@ -10,6 +12,7 @@ create_and_update_fileds = [
     'type', 
     'number',
     'node',
+    'rate',
     'status', 
     'service', 
 ]
@@ -35,6 +38,7 @@ class ListAndCreateConnectionUnitView(CreateView):
                 Q(node__ip_address__icontains=query) |
                 Q(node__name__name__icontains=query)
             )
+        context["service_names"] = Service.objects.select_related('abonent').all()
         context["connections"] = qs
         return context
 
@@ -44,3 +48,8 @@ class UpdateConnectionUnitView(UpdateView):
     template_name = "connections/update.html"
     fields = create_and_update_fileds
     success_url = '/connections/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["service_names"] = Service.objects.select_related('abonent').all()
+        return context
