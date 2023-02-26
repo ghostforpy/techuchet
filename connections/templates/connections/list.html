@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<form action="." method="get">
+{% comment %} <form action="." method="get">
   <div class="input-group mb-3">
     <input id="query" type="text" class="form-control" placeholder="Поиск по атрибутам" aria-label="search" aria-describedby="basic-addon2" name="query" {% if query %}value="{{ query }}"{% endif %}>
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="submit">Поиск</button>
     </div>
   </div>
-</form>
+</form> {% endcomment %}
 
     <h2>Интерфейсы</h2>
     <table class="table">
@@ -34,8 +34,81 @@
                   <td><a href="{{ connection.service.get_absolute_url }}">{{ connection.service }}</a></td>
                 </tr>
             {% endfor %}
+            <form action=".">
+              <tr class="form-table-search-tr">
+                <td>
+                  <select name="type" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for type in connection_types %}
+                      <option value="{{type.id}}" {% if select_type == type.id %}selected{% endif %}>{{type.name}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td><input name="number" type="number" {% if number %}value="{{number}}"{% endif %} class="form-control form-table-search-input"></input></td>
+                <td>
+                  <select name="node" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for node in nodes %}
+                      <option value="{{node.id}}" {% if select_node == node.id %}selected{% endif %}>{{node.ip_address}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td><input name="rate" type="number" {% if rate %}value="{{rate}}"{% endif %} class="form-control form-table-search-input"></input></td>
+                <td>
+                  <select name="object_status" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for object_status in object_statuses %}
+                      <option value="{{object_status.id}}" {% if select_object_status == object_status.id %}selected{% endif %}>{{object_status.name}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="service" class="form-control form-table-search-input">
+                    <option value="">-------------</option>
+                    {% for service in services %}
+                      <option value="{{service.id}}" {% if select_service == service.id %}selected{% endif %}>{{service}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+
+              </tr>
+              <tr>
+                <td colspan="6"><button class="w-100 btn btn-outline-secondary btn-sm" type="submit">Поиск</button></td>
+              </tr>
+            </form>
         </tbody>
       </table>
+
+      {% if connections_pages > 1 %}
+          <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                  {% if connections.has_previous %}
+                      <li class="page-item">
+                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.previous_page_number}}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">Предыдущая</span>
+                          </a>
+                      </li>
+                  {% endif %}
+                  {% if connections.has_previous %}
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.previous_page_number}}">{{connections.previous_page_number}}</a></li>
+                  {% endif %}
+                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.number}}">{{connections.number}}</a></li>
+                  {% if connections.has_next %}
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.next_page_number}}">{{connections.next_page_number}}</a></li>
+                  {% endif %}
+                  {% if connections.has_next %}
+                      <li class="page-item">
+                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&serevice={{select_service}}&page={{connections.next_page_number}}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">Следующая</span>
+                          </a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </nav>
+      {% endif %}
+
       <button type="button" class="w-100 btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Добавить интерфейс
       </button>

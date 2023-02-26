@@ -2,10 +2,14 @@
 # from django.views.generic import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.db.models import Q
+from django.core.paginator import Paginator
+
+from abonents.models import ObjectStatus
+from nodes.models import Node
 
 from services.models import Service
 
-from .models import ConnectionUnit
+from .models import ConnectionUnit, ConnectionUnitType
 
 
 create_and_update_fileds = [
@@ -27,19 +31,50 @@ class ListAndCreateConnectionUnitView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         qs = self.model.objects.all()
-        if self.request.GET.get('query'):
-            query = self.request.GET.get('query')
-            context["query"] = query
-            qs = qs.filter(
-                Q(type__name__icontains=query) |
-                Q(status__name__icontains=query) |
-                Q(number=query) |
-                Q(service__name__name__icontains=query) |
-                Q(node__ip_address__icontains=query) |
-                Q(node__name__name__icontains=query)
-            )
+
+        if self.request.GET.get('type'):
+            _type = self.request.GET.get('type')
+            if _type.isdigit():
+                qs = qs.filter(type__id=int(_type))
+                context['select_type'] = int(_type)
+        if self.request.GET.get('service'):
+            service = self.request.GET.get('service')
+            if service.isdigit():
+                qs = qs.filter(service__id=int(service))
+                context['select_service'] = int(service)
+        if self.request.GET.get('object_status'):
+            object_status = self.request.GET.get('object_status')
+            if object_status.isdigit():
+                qs = qs.filter(status__id=int(object_status))
+                context['select_object_status'] = int(object_status)
+        if self.request.GET.get('node'):
+            node = self.request.GET.get('node')
+            if node.isdigit():
+                qs = qs.filter(node__id=int(node))
+                context['select_node'] = int(node)
+        if self.request.GET.get('number'):
+            number = self.request.GET.get('number')
+            if number.isdigit():
+                qs = qs.filter(number=int(number))
+                context['number'] = int(number)
+        if self.request.GET.get('rate'):
+            rate = self.request.GET.get('rate')
+            if rate.isdigit():
+                qs = qs.filter(rate=int(rate))
+                context['rate'] = int(rate)
+        page = 1
+        if self.request.GET.get('page'):
+            page = self.request.GET.get('page')
+            if page.isdigit():
+                page = int(page)
+        paginator = Paginator(qs, 1)
+        context['connections_pages'] = paginator.num_pages
         context["service_names"] = Service.objects.select_related('abonent').all()
-        context["connections"] = qs
+        context["connections"] = paginator.get_page(page)
+        context["connection_types"] = ConnectionUnitType.objects.all()
+        context["services"] = Service.objects.all()
+        context["object_statuses"] = ObjectStatus.objects.all()
+        context["nodes"] = Node.objects.all()
         return context
 
 
