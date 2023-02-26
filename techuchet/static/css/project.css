@@ -15,3 +15,10 @@
 .home-btns {
   height: 150px;
 }
+
+.form-table-search-input{
+  width: 100%;
+}
+.form-table-search-tr{
+  border-color: white;
+}
