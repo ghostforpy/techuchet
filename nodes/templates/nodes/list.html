@@ -135,7 +135,7 @@
       {% endif %}
 
 
-      <button type="button" class="w-100 btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <button type="button" class="w-100 btn btn-secondary mt-5" id="modal-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Добавить оборудование
       </button>
       
@@ -168,4 +168,15 @@
       {% include 'nodes/node_name_js.html' %}
       {% include 'nodes/region_js.html' %}
       <a href="{% url 'net_infrustructure' %}"><button class="home-btn-otchet btn btn-secondary btn-lg active w-100 mt-5" role="button" aria-pressed="true">Назад к сетевой инфраструктуре</button></a>
+      {% if form.errors %}
+        <script>
+          window.onload = function() {
+            let t = document.getElementById('modal-btn');
+            t.click()
+          };
+          
+        </script>
+      {% endif %}
+
+
 {% endblock %}
