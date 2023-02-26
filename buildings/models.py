@@ -8,6 +8,7 @@ class RegionType(models.Model):
     class Meta:
         verbose_name = "Тип региона"
         verbose_name_plural = "Типы регионов"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -20,6 +21,7 @@ class Region(models.Model):
     class Meta:
         verbose_name = "Регион"
         verbose_name_plural = "Регионы"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -31,6 +33,7 @@ class BuildingType(models.Model):
     class Meta:
         verbose_name = "Тип здания"
         verbose_name_plural = "Типы зданий"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -44,6 +47,7 @@ class Building(models.Model):
     class Meta:
         verbose_name = "Здание"
         verbose_name_plural = "Здания"
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.street}, {self.house}'

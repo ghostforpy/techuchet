@@ -12,6 +12,7 @@ class ServiceType(models.Model):
     class Meta:
         verbose_name = "Тип сервиса"
         verbose_name_plural = "Типы сервисов"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -24,6 +25,7 @@ class ServiceName(models.Model):
     class Meta:
         verbose_name = "Имя сервиса"
         verbose_name_plural = "Имена сервисов"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -59,6 +61,7 @@ class Service(models.Model):
     class Meta:
         verbose_name = "Сервис"
         verbose_name_plural = "Сервисы"
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.name.name} {self.abonent} ({self.abonent.contract})'

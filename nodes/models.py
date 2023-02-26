@@ -8,6 +8,7 @@ class NodeType(models.Model):
     class Meta:
         verbose_name = "Тип оборудования"
         verbose_name_plural = "Типы оборудования"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -26,6 +27,7 @@ class NodeName(models.Model):
     class Meta:
         verbose_name = "Имя оборудования"
         verbose_name_plural = "Имена оборудования"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -69,6 +71,7 @@ class Node(models.Model):
     class Meta:
         verbose_name = "Логическое устройство"
         verbose_name_plural = "Логические устройства"
+        ordering = ['id']
 
     def get_absolute_url(self):
         return reverse('node-detail', kwargs={'pk': self.pk})

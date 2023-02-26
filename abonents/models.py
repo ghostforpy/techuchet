@@ -8,6 +8,7 @@ class ObjectStatus(models.Model):
     class Meta:
         verbose_name = "Статус объекта"
         verbose_name_plural = "Статусы объектов"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -18,6 +19,7 @@ class AbonentType(models.Model):
     class Meta:
         verbose_name = "Тип абонента"
         verbose_name_plural = "Типы абонентов"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -42,6 +44,7 @@ class Abonent(models.Model):
     class Meta:
         verbose_name = "Абонент"
         verbose_name_plural = "Абоненты"
+        ordering = ['id']
 
     def __str__(self):
         return self.name

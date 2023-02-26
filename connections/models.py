@@ -10,6 +10,7 @@ class ConnectionUnitType(models.Model):
     class Meta:
         verbose_name = "Тип интерфейса"
         verbose_name_plural = "Типы интерфейсов"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -61,6 +62,7 @@ class ConnectionUnit(models.Model):
     class Meta:
         verbose_name = "Интерфейс"
         verbose_name_plural = "Интерфейсы"
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.type} № {self.number}'

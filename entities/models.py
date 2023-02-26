@@ -9,6 +9,7 @@ class Entity(models.Model):
     class Meta:
         verbose_name = "Сущность"
         verbose_name_plural = "Сущности"
+        ordering = ['id']
 
     def __str__(self):
         return self.name
