@@ -1,0 +1,51 @@
+<script>
+    
+    var abonentNames = new Array();
+    {% for i in abonent_names %}
+    abonentNames.push({
+      'name':'{{ i.name }} ({{ i.contract }})', 
+      'id':'{{ i.id }}'
+    });
+    {% endfor %}
+
+    const search_select = document.getElementById("searcheslect");
+    const dropDownMenu = document.getElementById("dropDownMenu");
+    const abonent_select = document.getElementById("id_abonent");
+    abonent_select.parentNode.classList.add('d-none');
+
+    function clearDropDownMenu(){
+      while (dropDownMenu.firstChild) {
+        dropDownMenu.removeChild(dropDownMenu.lastChild);
+      }
+    }
+    if (abonent_select.value){
+      let abonentNamesItem = abonentNames.find(item => item.id === abonent_select.value);
+      search_select.value = abonentNamesItem.name;
+    }
+    var filteredAbonentNames = new Array()
+    search_select.oninput = function() {
+      filteredAbonentNames = abonentNames.filter(item => item.name.indexOf(search_select.value) !== -1);
+      clearDropDownMenu();
+      filteredAbonentNames.forEach(function(item, index, array) {
+        let liLast = document.createElement('li');
+        let aLast = document.createElement('a');
+        aLast.classList.add('dropdown-item')
+        aLast.innerHTML = item.name;
+        aLast.onclick = function() {
+          search_select.value = item.name;
+          abonent_select.value = item.id;
+          dropDownMenu.classList.remove('show');
+        };
+        liLast.append(aLast);
+        dropDownMenu.append(liLast);
+
+      }
+      )
+      dropDownMenu.classList.add('show');
+    };
+    document.onclick = function (e) {
+        if (e.target.className != "dropdown-menu") {
+            dropDownMenu.classList.remove('show');
+        };
+    };
+  </script>

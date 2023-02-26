@@ -6,11 +6,13 @@
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
-      <div class="d-flex justify-content-between">
+      {% include 'services/abonent_names_list.html' %}
+      <div class="d-flex justify-content-between mt-3">
         <button type="submit" class="btn btn-primary">Обновить</button>
         <a href="{% url 'service-list'%}" role="button" class="btn btn-secondary">К списку услуг</a>
       </div>
     </form>
     
     {% include 'services/service_name_js.html' %}
+    {% include 'services/abonent_names_js.html' %}
 {% endblock %}

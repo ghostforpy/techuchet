@@ -6,6 +6,8 @@ from django.views.generic.list import ListView
 from django.db.models import Q
 from django.http import JsonResponse
 
+from abonents.models import Abonent
+
 from .models import Service, ServiceName
 
 
@@ -45,6 +47,7 @@ class ListAndCreateServiceView(CreateView):
                 Q(abonent__contract__icontains=query)
             )
         context['service_names'] = ServiceName.objects.select_related('type').all()
+        context["abonent_names"] = Abonent.objects.all()
         context["services"] = qs
         return context
 
@@ -58,6 +61,7 @@ class UpdateServiceView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['service_names'] = ServiceName.objects.select_related('type').all()
+        context["abonent_names"] = Abonent.objects.all()
         return context
 
 

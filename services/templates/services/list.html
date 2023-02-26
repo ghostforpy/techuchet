@@ -54,6 +54,7 @@
                 
                   {% csrf_token %}
                   {{ form|crispy }}
+                  {% include 'services/abonent_names_list.html' %}
                 
               </div>
               <div class="modal-footer">
@@ -65,5 +66,6 @@
         </div>
       </div>
     {% include 'services/service_name_js.html' %}
+    {% include 'services/abonent_names_js.html' %}
 
 {% endblock %}
