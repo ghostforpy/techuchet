@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.core.paginator import Paginator
+from buildings.models import Building, Region
 
 from .models import Abonent, ObjectStatus, AbonentType
 
@@ -10,6 +11,7 @@ create_and_update_fileds = [
     'name', 
     'type', 
     'phone', 
+    'building',
     'object_status', 
     'contract', 
 ]
@@ -82,11 +84,13 @@ class ListAndCreateAbonentView(CreateView):
         context["abonents"] = paginator.get_page(page)
         context["object_statuses"] = ObjectStatus.objects.all()
         context["abonent_types"] = AbonentType.objects.all()
+        context['buildings'] = Building.objects.select_related('region').all()
+        context["regions"] = Region.objects.all()
         return context
 
 
 class UpdateAbonentView(UpdateView):
     model = Abonent
     template_name = "abonents/update.html"
-    fields = create_and_update_fileds + ['disable_date']
+    fields = [i for i in create_and_update_fileds if i != 'building'] + ['disable_date']
     success_url = '/abonents/'

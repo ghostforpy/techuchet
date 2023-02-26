@@ -37,7 +37,7 @@
     buildings.push({'name':'{{ i }}', 'id':{{ i.id }}, 'region_id': '{{ i.region.id }}'});
   {% endfor %}
   const selectBuilding = document.getElementById("id_building");
-  
+
   function clearBuildingSelect(){
     while (selectBuilding.firstChild) {
       selectBuilding.removeChild(selectBuilding.lastChild);
