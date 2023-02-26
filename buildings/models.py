@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class RegionType(models.Model):
-    name = models.CharField('Наименование', max_length=30, unique=True)
+    name = models.CharField('Наименование', max_length=100, unique=True)
     
     class Meta:
         verbose_name = "Тип региона"

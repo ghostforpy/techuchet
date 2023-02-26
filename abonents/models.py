@@ -3,7 +3,7 @@ from django.urls import reverse
 # Create your models here.
 
 class ObjectStatus(models.Model):
-    name = models.CharField('Наименование', max_length=16, unique=True)
+    name = models.CharField('Наименование', max_length=50, unique=True)
 
     class Meta:
         verbose_name = "Статус объекта"
@@ -29,7 +29,7 @@ class Abonent(models.Model):
     change_date = models.DateField('Дата изменения', auto_now=True)
     enable_date = models.DateField('Дата подключения', blank=True, null=True)
     disable_date = models.DateField('Дата отключения', blank=True, null=True)
-    phone = models.CharField('Номер телефона', max_length=15, unique=True, null=True, blank=True)
+    phone = models.CharField('Номер телефона', max_length=30, unique=True, null=True, blank=True)
     contract = models.CharField('Номер договора', max_length=50, unique=True, null=True, blank=True)
     object_status = models.ForeignKey(
         ObjectStatus,
