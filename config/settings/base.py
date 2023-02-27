@@ -282,8 +282,6 @@ SOCIALACCOUNT_ADAPTER = "techuchet.users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_FORMS = {"signup": "techuchet.users.forms.UserSocialSignupForm"}
 
 
-# Your stuff...
-# ------------------------------------------------------------------------------
 # https://github.com/CleitonDeLima/django-login-required-middleware
 LOGIN_REQUIRED_IGNORE_PATHS = [
     r'/accounts/login/$',
