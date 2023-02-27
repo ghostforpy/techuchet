@@ -162,6 +162,7 @@
                 
                   {% csrf_token %}
                   {{ form|crispy }}
+                  {% include 'nodes/parent_node_name_list.html' %}
               
               </div>
 
@@ -176,6 +177,7 @@
       </div>
       {% include 'nodes/node_name_js.html' %}
       {% include 'nodes/region_js.html' %}
+      {% include 'nodes/parent_node_name_js.html' %}
       {% if form.errors %}
         <script>
           window.onload = function() {

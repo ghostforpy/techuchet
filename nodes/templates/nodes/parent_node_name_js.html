@@ -1,0 +1,50 @@
+<script>
+    
+    var nodeNames = new Array();
+    {% for i in nodes %}
+    nodeNames.push({
+      'name':'{{ i }}', 
+      'id':'{{ i.id }}'
+    });
+    {% endfor %}
+
+    const search_select_nodes = document.getElementById("searcheselectNodes");
+    const dropDownMenuNodes = document.getElementById("dropDownMenuNodes");
+    const parent_node_select = document.getElementById("id_parent");
+    parent_node_select.parentNode.classList.add('d-none');
+
+    function clearDropDownMenuNodes(){
+      while (dropDownMenuNodes.firstChild) {
+        dropDownMenuNodes.removeChild(dropDownMenuNodes.lastChild);
+      }
+    }
+    if (parent_node_select.value){
+      let serviceNamesitem = nodeNames.find(item => item.id === parent_node_select.value);
+      search_select_nodes.value = serviceNamesitem.name;
+    }
+    var filteredNodeNames = new Array()
+    search_select_nodes.oninput = function() {
+      filteredNodeNames = nodeNames.filter(item => item.name.indexOf(search_select_nodes.value) !== -1);
+      clearDropDownMenuNodes();
+      filteredNodeNames.forEach(function(item, index, array) {
+        let liLast = document.createElement('li');
+        let aLast = document.createElement('a');
+        aLast.classList.add('dropdown-item')
+        aLast.innerHTML = item.name;
+        aLast.onclick = function() {
+          search_select_nodes.value = item.name;
+          parent_node_select.value = item.id;
+          dropDownMenuNodes.classList.remove('show');
+        };
+        liLast.append(aLast);
+        dropDownMenuNodes.append(liLast);
+      }
+      )
+      dropDownMenuNodes.classList.add('show');
+    };
+    document.onclick = function (e) {
+        if (e.target.className != "dropdown-menu") {
+            dropDownMenuNodes.classList.remove('show');
+        };
+    };
+  </script>

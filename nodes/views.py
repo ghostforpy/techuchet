@@ -103,6 +103,7 @@ class ListAndCreateNodeView(CreateView):
         context["object_statuses"] = ObjectStatus.objects.all()
         context['buildings'] = Building.objects.select_related('region').all()
         context['node_names'] = NodeName.objects.select_related('type').all()
+        context['nodes'] = Node.objects.all()
         context["node_types"] = NodeType.objects.all()
         context["parent_nodes"] = Node.objects.all()
         context["regions"] = Region.objects.all()
@@ -121,4 +122,5 @@ class UpdateNodeView(UpdateView):
         context['node_names'] = NodeName.objects.select_related('type').all()
         context["regions"] = Region.objects.all()
         context['buildings'] = Building.objects.select_related('region').all()
+        context['nodes'] = Node.objects.all()
         return context
