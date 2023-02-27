@@ -57,11 +57,17 @@
                   <td><input type="date" {% if change_date %}value="{{change_date}}"{% endif %} name="change_date" class="form-control form-table-search-input"></input></td>
                   <td><input type="date" {% if disable_date %}value="{{disable_date}}"{% endif %} name="disable_date" class="form-control form-table-search-input"></input></td>
                 </tr>
-                <tr>
+                <tr {% if filtered %}class="form-table-search-tr"{% endif %}>
                   <td colspan="8"><button class="w-100 btn btn-outline-secondary btn-sm" type="submit">Поиск</button></td>
                 </tr>
               </form>
-          
+              {% if filtered %}
+              <tr>
+                <td colspan="8">
+                  <a href="."><button class="w-100 btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Очистить</button></a>
+                </td>
+              </tr>
+            {% endif %}
         </tbody>
       </table>
 

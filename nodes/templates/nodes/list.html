@@ -99,10 +99,17 @@
                   </select>
                 </td>
               </tr>
-              <tr>
+              <tr {% if filtered %}class="form-table-search-tr"{% endif %}>
                 <td colspan="9"><button class="w-100 btn btn-outline-secondary btn-sm" type="submit">Поиск</button></td>
               </tr>
             </form>
+            {% if filtered %}
+                <tr>
+                  <td colspan="9">
+                    <a href="."><button class="w-100 btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Очистить</button></a>
+                  </td>
+                </tr>
+              {% endif %}
         </tbody>
       </table>
 

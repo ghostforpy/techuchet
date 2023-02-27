@@ -25,27 +25,33 @@ class ListAndCreateAbonentView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         qs = self.model.objects.all()
+        filtered = False
         if self.request.GET.get('contract'):
             contract = self.request.GET.get('contract')
             qs = qs.filter(contract__icontains=contract)
+            filtered = True
             context['contract'] = contract
         if self.request.GET.get('name'):
             name = self.request.GET.get('name')
             qs = qs.filter(name__icontains=name)
+            filtered = True
             context['name'] = name
         if self.request.GET.get('phone'):
             phone = self.request.GET.get('phone')
             qs = qs.filter(phone__icontains=phone)
+            filtered = True
             context['phone'] = phone
         if self.request.GET.get('type'):
             _type = self.request.GET.get('type')
             if _type.isdigit():
                 qs = qs.filter(type__id=int(_type))
+                filtered = True
                 context['select_type'] = int(_type)
         if self.request.GET.get('object_status'):
             object_status = self.request.GET.get('object_status')
             if object_status.isdigit():
                 qs = qs.filter(object_status__id=int(object_status))
+                filtered = True
                 context['select_object_status'] = int(object_status)
         if self.request.GET.get('created_date'):
             created_date = self.request.GET.get('created_date')
@@ -53,6 +59,7 @@ class ListAndCreateAbonentView(CreateView):
                 qs = qs.filter(
                     created_date=datetime.strptime(created_date, "%Y-%m-%d")
                 )
+                filtered = True
                 context['created_date'] = created_date
             except (ValueError, TypeError):
                 pass
@@ -62,6 +69,7 @@ class ListAndCreateAbonentView(CreateView):
                 qs = qs.filter(
                     disable_date=datetime.strptime(disable_date, "%Y-%m-%d")
                 )
+                filtered = True
                 context['disable_date'] = disable_date
             except (ValueError, TypeError):
                 pass
@@ -71,6 +79,7 @@ class ListAndCreateAbonentView(CreateView):
                 qs = qs.filter(
                     change_date=datetime.strptime(change_date, "%Y-%m-%d")
                 )
+                filtered = True
                 context['change_date'] = change_date
             except (ValueError, TypeError):
                 pass
@@ -86,6 +95,7 @@ class ListAndCreateAbonentView(CreateView):
         context["abonent_types"] = AbonentType.objects.all()
         context['buildings'] = Building.objects.select_related('region').all()
         context["regions"] = Region.objects.all()
+        context["filtered"] = filtered
         return context
 
 

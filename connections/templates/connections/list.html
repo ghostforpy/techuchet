@@ -48,12 +48,13 @@
                 </td>
                 <td><input name="number" type="number" {% if number %}value="{{number}}"{% endif %} class="form-control form-table-search-input"></input></td>
                 <td>
-                  <select name="node" class="form-control form-table-search-input">
+                  {% comment %} <select name="node" class="form-control form-table-search-input">
                     <option value="">-------------</option>
                     {% for node in nodes %}
                       <option value="{{node.id}}" {% if select_node == node.id %}selected{% endif %}>{{node.ip_address}}</option>
                     {% endfor %}
-                  </select>
+                  </select> {% endcomment %}
+                <input name="ip_address" {% if ip_address %}value="{{ip_address}}"{% endif %} class="form-control form-table-search-input"></input>
                 </td>
                 <td><input name="rate" type="number" {% if rate %}value="{{rate}}"{% endif %} class="form-control form-table-search-input"></input></td>
                 <td>
@@ -65,19 +66,26 @@
                   </select>
                 </td>
                 <td>
-                  <select name="service" class="form-control form-table-search-input">
+                  {% comment %} <select name="service" class="form-control form-table-search-input">
                     <option value="">-------------</option>
                     {% for service in services %}
                       <option value="{{service.id}}" {% if select_service == service.id %}selected{% endif %}>{{service}}</option>
                     {% endfor %}
-                  </select>
+                  </select> {% endcomment %}
+                <input name="service" {% if service %}value="{{service}}"{% endif %} class="form-control form-table-search-input"></input>
                 </td>
-
               </tr>
-              <tr>
+              <tr {% if filtered %}class="form-table-search-tr"{% endif %}>
                 <td colspan="6"><button class="w-100 btn btn-outline-secondary btn-sm" type="submit">Поиск</button></td>
               </tr>
             </form>
+             {% if filtered %}
+                <tr>
+                  <td colspan="6">
+                    <a href="."><button class="w-100 btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Очистить</button></a>
+                  </td>
+                </tr>
+              {% endif %}
         </tbody>
       </table>
 
@@ -86,22 +94,22 @@
               <ul class="pagination justify-content-center">
                   {% if connections.has_previous %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.previous_page_number}}" aria-label="Previous">
+                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&number={{number}}&ip_address={{ip_address}}&rate={{rate}}&object_status={{select_object_status}}&service={{service}}&page={{connections.previous_page_number}}" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Предыдущая</span>
                           </a>
                       </li>
                   {% endif %}
                   {% if connections.has_previous %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.previous_page_number}}">{{connections.previous_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&number={{number}}&ip_address={{ip_address}}&rate={{rate}}&object_status={{select_object_status}}&service={{service}}&page={{connections.previous_page_number}}">{{connections.previous_page_number}}</a></li>
                   {% endif %}
-                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.number}}">{{connections.number}}</a></li>
+                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'connection-list' %}?type={{select_type}}&number={{number}}&ip_address={{ip_address}}&rate={{rate}}&object_status={{select_object_status}}&service={{service}}&page={{connections.number}}">{{connections.number}}</a></li>
                   {% if connections.has_next %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.next_page_number}}">{{connections.next_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&number={{number}}&ip_address={{ip_address}}&rate={{rate}}&object_status={{select_object_status}}&service={{service}}&page={{connections.next_page_number}}">{{connections.next_page_number}}</a></li>
                   {% endif %}
                   {% if connections.has_next %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&node={{select_node}}&number={{number}}&rate={{rate}}&object_status={{select_object_status}}&service={{select_service}}&page={{connections.next_page_number}}" aria-label="Next">
+                          <a class="page-link page-number" href="{% url 'connection-list' %}?type={{select_type}}&number={{number}}&ip_address={{ip_address}}&rate={{rate}}&object_status={{select_object_status}}&service={{service}}&page={{connections.next_page_number}}" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Следующая</span>
                           </a>

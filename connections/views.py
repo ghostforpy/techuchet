@@ -31,36 +31,52 @@ class ListAndCreateConnectionUnitView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         qs = self.model.objects.all()
-
+        filtered = False
         if self.request.GET.get('type'):
             _type = self.request.GET.get('type')
             if _type.isdigit():
                 qs = qs.filter(type__id=int(_type))
+                filtered = True
                 context['select_type'] = int(_type)
         if self.request.GET.get('service'):
             service = self.request.GET.get('service')
-            if service.isdigit():
-                qs = qs.filter(service__id=int(service))
-                context['select_service'] = int(service)
+            qs = qs.filter(
+                Q(service__name__name__icontains=service) |
+                Q(service__type__name__icontains=service) |
+                Q(service__abonent__name__icontains=service) |
+                Q(service__abonent__contract__icontains=service)
+            )
+            filtered = True
+            context['service'] = int(service)
+        if self.request.GET.get('ip_address'):
+            ip_address = self.request.GET.get('ip_address')
+            qs = qs.filter(
+                node__ip_address__icontains=ip_address
+            )
+            filtered = True
+            context['ip_address'] = ip_address
         if self.request.GET.get('object_status'):
             object_status = self.request.GET.get('object_status')
             if object_status.isdigit():
                 qs = qs.filter(status__id=int(object_status))
+                filtered = True
                 context['select_object_status'] = int(object_status)
-        if self.request.GET.get('node'):
-            node = self.request.GET.get('node')
-            if node.isdigit():
-                qs = qs.filter(node__id=int(node))
-                context['select_node'] = int(node)
+        # if self.request.GET.get('node'):
+        #     node = self.request.GET.get('node')
+        #     if node.isdigit():
+        #         qs = qs.filter(node__id=int(node))
+        #         context['select_node'] = int(node)
         if self.request.GET.get('number'):
             number = self.request.GET.get('number')
             if number.isdigit():
                 qs = qs.filter(number=int(number))
+                filtered = True
                 context['number'] = int(number)
         if self.request.GET.get('rate'):
             rate = self.request.GET.get('rate')
             if rate.isdigit():
                 qs = qs.filter(rate=int(rate))
+                filtered = True
                 context['rate'] = int(rate)
         page = 1
         if self.request.GET.get('page'):
@@ -74,6 +90,7 @@ class ListAndCreateConnectionUnitView(CreateView):
         context["connection_types"] = ConnectionUnitType.objects.all()
         context["services"] = Service.objects.all()
         context["object_statuses"] = ObjectStatus.objects.all()
+        context["filtered"] = filtered
         context["nodes"] = Node.objects.all()
         return context
 
