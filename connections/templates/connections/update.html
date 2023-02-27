@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h2>Оборудование {{ object.id }}</h2>
+    <h2>Интерфейс {{ object.id }}</h2>
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
