@@ -43,9 +43,9 @@
       )
       dropDownMenu.classList.add('show');
     };
-    document.onclick = function (e) {
+    {% comment %} document.onclick = function (e) {
         if (e.target.className != "dropdown-menu") {
             dropDownMenu.classList.remove('show');
         };
-    };
+    }; {% endcomment %}
   </script>
