@@ -104,4 +104,5 @@ class UpdateConnectionUnitView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["service_names"] = Service.objects.select_related('abonent').all()
+        context["nodes"] = Node.objects.all()
         return context
