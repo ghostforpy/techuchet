@@ -73,12 +73,18 @@ class ListAndCreateServiceView(CreateView):
                 qs = qs.filter(type__id=int(_type))
                 filtered = True
                 context['select_type'] = int(_type)
-        if self.request.GET.get('abonent'):
-            abonent = self.request.GET.get('abonent')
-            if abonent.isdigit():
-                qs = qs.filter(abonent__id=int(abonent))
-                filtered = True
-                context['select_abonent'] = int(abonent)
+        # if self.request.GET.get('abonent'):
+        #     abonent = self.request.GET.get('abonent')
+        #     if abonent.isdigit():
+        #         qs = qs.filter(abonent__id=int(abonent))
+        #         filtered = True
+        #         context['select_abonent'] = int(abonent)
+        if self.request.GET.get('contract'):
+            contract = self.request.GET.get('contract')
+            
+            qs = qs.filter(abonent__contract__icontains=contract)
+            filtered = True
+            context['contract'] = contract
 
         page = 1
         if self.request.GET.get('page'):

@@ -56,12 +56,14 @@
                   </select>
                 </td>
                 <td>
-                  <select name="abonent" class="form-control form-table-search-input">
+                  {% comment %} <select name="abonent" class="form-control form-table-search-input">
                     <option value="">-------------</option>
                     {% for abonent in abonent_names %}
                       <option value="{{abonent.id}}" {% if select_abonent == abonent.id %}selected{% endif %}>{{abonent.name}} ({{abonent.contract}})</option>
                     {% endfor %}
-                  </select>
+                  </select> {% endcomment %}
+                <input name="contract" {% if contract %}value="{{contract}}"{% endif %} class="form-control form-table-search-input"></input>
+
                 </td>
                 <td>
                   <select name="object_status" class="form-control form-table-search-input">
@@ -94,22 +96,22 @@
               <ul class="pagination justify-content-center">
                   {% if services.has_previous %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&abonent={{select_abonent}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.previous_page_number}}" aria-label="Previous">
+                          <a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&contract={{contract}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.previous_page_number}}" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Предыдущая</span>
                           </a>
                       </li>
                   {% endif %}
                   {% if services.has_previous %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&abonent={{select_abonent}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.previous_page_number}}">{{services.previous_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&contract={{contract}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.previous_page_number}}">{{services.previous_page_number}}</a></li>
                   {% endif %}
-                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&abonent={{select_abonent}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.number}}">{{services.number}}</a></li>
+                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&contract={{contract}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.number}}">{{services.number}}</a></li>
                   {% if services.has_next %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&abonent={{select_abonent}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.next_page_number}}">{{services.next_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&contract={{contract}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.next_page_number}}">{{services.next_page_number}}</a></li>
                   {% endif %}
                   {% if services.has_next %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&abonent={{select_abonent}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.next_page_number}}" aria-label="Next">
+                          <a class="page-link page-number" href="{% url 'service-list' %}?type={{select_type}}&change_date={{change_date}}&created_date={{created_date}}&contract={{contract}}&service_name={{select_service_name}}&object_status={{select_object_status}}&page={{services.next_page_number}}" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Следующая</span>
                           </a>
