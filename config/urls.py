@@ -11,6 +11,7 @@ urlpatterns = [
     path("service/", TemplateView.as_view(template_name="pages/services.html"), name="services-page"),
     path("abonents/", include("abonents.urls")),
     path("nodes/", include("nodes.urls")),
+    path("reports/", include("reports.urls")),
     path("connections/", include("connections.urls")),
     path("services/", include("services.urls")),
     path(
