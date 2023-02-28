@@ -110,7 +110,7 @@ class ListAndCreateNodeView(CreateView):
         context['node_names'] = NodeName.objects.select_related('type').all()
         context['all_nodes'] = Node.objects.all() # поправить
         context["node_types"] = NodeType.objects.all()
-        context["parent_nodes"] = Node.objects.all() # дубль
+        # context["parent_nodes"] = Node.objects.all() # для select parent_node
         context["regions"] = Region.objects.all()
         context["filtered"] = filtered
         return context
