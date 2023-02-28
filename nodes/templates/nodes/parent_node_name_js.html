@@ -1,8 +1,8 @@
 <script>
     
-    var nodeNames = new Array();
-    {% for i in nodes %}
-    nodeNames.push({
+    var parentNodeNames = new Array();
+    {% for i in all_nodes %}
+    parentNodeNames.push({
       'name':'{{ i }}', 
       'id':'{{ i.id }}'
     });
@@ -19,12 +19,12 @@
       }
     }
     if (parent_node_select.value){
-      let serviceNamesitem = nodeNames.find(item => item.id === parent_node_select.value);
+      let serviceNamesitem = parentNodeNames.find(item => item.id === parent_node_select.value);
       search_select_nodes.value = serviceNamesitem.name;
     }
     var filteredNodeNames = new Array()
     search_select_nodes.oninput = function() {
-      filteredNodeNames = nodeNames.filter(item => item.name.indexOf(search_select_nodes.value) !== -1);
+      filteredNodeNames = parentNodeNames.filter(item => item.name.indexOf(search_select_nodes.value) !== -1);
       clearDropDownMenuNodes();
       filteredNodeNames.forEach(function(item, index, array) {
         let liLast = document.createElement('li');
