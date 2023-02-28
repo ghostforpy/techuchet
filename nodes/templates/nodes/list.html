@@ -83,12 +83,13 @@
                 <td><input type="date" {% if created_date %}value="{{created_date}}"{% endif %} name="created_date" class="form-control form-table-search-input"></input></td>
                 <td><input type="date" {% if change_date %}value="{{change_date}}"{% endif %} name="change_date" class="form-control form-table-search-input"></input></td>
                 <td>
-                  <select name="parent_node" class="form-control form-table-search-input">
+                  <input name="parent_ip_address" {% if parent_ip_address %}value="{{parent_ip_address}}"{% endif %} class="form-control form-table-search-input"></input>
+                  {% comment %} <select name="parent_node" class="form-control form-table-search-input">
                     <option value="">-------------</option>
                     {% for node in parent_nodes %}
                       <option value="{{node.id}}" {% if parent_node == node.id %}selected{% endif %}>{{node.ip_address}}</option>
                     {% endfor %}
-                  </select>
+                  </select> {% endcomment %}
                 </td>
                 <td>
                   <select name="region" class="form-control form-table-search-input">
@@ -118,22 +119,22 @@
               <ul class="pagination justify-content-center">
                   {% if nodes.has_previous %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&object_status={{select_object_status}}&page={{nodes.previous_page_number}}" aria-label="Previous">
+                          <a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&parent_ip_address={{parent_ip_address}}&object_status={{select_object_status}}&page={{nodes.previous_page_number}}" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Предыдущая</span>
                           </a>
                       </li>
                   {% endif %}
                   {% if nodes.has_previous %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&object_status={{select_object_status}}&page={{nodes.previous_page_number}}">{{nodes.previous_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&parent_ip_address={{parent_ip_address}}&object_status={{select_object_status}}&page={{nodes.previous_page_number}}">{{nodes.previous_page_number}}</a></li>
                   {% endif %}
-                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&object_status={{select_object_status}}&page={{nodes.number}}">{{nodes.number}}</a></li>
+                  <li class="page-item"><a class="page-link active-page-number page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&parent_ip_address={{parent_ip_address}}&object_status={{select_object_status}}&page={{nodes.number}}">{{nodes.number}}</a></li>
                   {% if nodes.has_next %}
-                      <li class="page-item"><a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&object_status={{select_object_status}}&page={{nodes.next_page_number}}">{{nodes.next_page_number}}</a></li>
+                      <li class="page-item"><a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&parent_ip_address={{parent_ip_address}}&object_status={{select_object_status}}&page={{nodes.next_page_number}}">{{nodes.next_page_number}}</a></li>
                   {% endif %}
                   {% if nodes.has_next %}
                       <li class="page-item">
-                          <a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&object_status={{select_object_status}}&page={{nodes.next_page_number}}" aria-label="Next">
+                          <a class="page-link page-number" href="{% url 'node-list' %}?type={{select_type}}&name={{select_name}}&building={{select_building}}&region={{select_region}}&parent_node={{parent_node}}&created_date={{created_date}}&change_date={{change_date}}&ip_address={{ip_address}}&parent_ip_address={{parent_ip_address}}&object_status={{select_object_status}}&page={{nodes.next_page_number}}" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Следующая</span>
                           </a>

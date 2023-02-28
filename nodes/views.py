@@ -52,6 +52,11 @@ class ListAndCreateNodeView(CreateView):
             qs = qs.filter(ip_address__icontains=ip_address)
             filtered = True
             context['ip_address'] = ip_address
+        if self.request.GET.get('parent_ip_address'):
+            parent_ip_address = self.request.GET.get('parent_ip_address')
+            qs = qs.filter(parent__ip_address__icontains=parent_ip_address)
+            filtered = True
+            context['parent_ip_address'] = parent_ip_address
         if self.request.GET.get('object_status'):
             object_status = self.request.GET.get('object_status')
             if object_status.isdigit():
@@ -78,12 +83,12 @@ class ListAndCreateNodeView(CreateView):
                 context['change_date'] = change_date
             except (ValueError, TypeError):
                 pass
-        if self.request.GET.get('parent_node'):
-            parent_node = self.request.GET.get('parent_node')
-            if parent_node.isdigit():
-                qs = qs.filter(parent__id=int(parent_node))
-                filtered = True
-                context['parent_node'] = int(parent_node)
+        # if self.request.GET.get('parent_node'):
+        #     parent_node = self.request.GET.get('parent_node')
+        #     if parent_node.isdigit():
+        #         qs = qs.filter(parent__id=int(parent_node))
+        #         filtered = True
+        #         context['parent_node'] = int(parent_node)
         if self.request.GET.get('region'):
             region = self.request.GET.get('region')
             if region.isdigit():
@@ -103,9 +108,9 @@ class ListAndCreateNodeView(CreateView):
         context["object_statuses"] = ObjectStatus.objects.all()
         context['buildings'] = Building.objects.select_related('region').all()
         context['node_names'] = NodeName.objects.select_related('type').all()
-        context['nodes'] = Node.objects.all()
+        context['all_nodes'] = Node.objects.all() # поправить
         context["node_types"] = NodeType.objects.all()
-        context["parent_nodes"] = Node.objects.all()
+        context["parent_nodes"] = Node.objects.all() # дубль
         context["regions"] = Region.objects.all()
         context["filtered"] = filtered
         return context
@@ -122,5 +127,5 @@ class UpdateNodeView(UpdateView):
         context['node_names'] = NodeName.objects.select_related('type').all()
         context["regions"] = Region.objects.all()
         context['buildings'] = Building.objects.select_related('region').all()
-        context['nodes'] = Node.objects.all()
+        context['all_nodes'] = Node.objects.all()
         return context
