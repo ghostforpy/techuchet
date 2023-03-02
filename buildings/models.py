@@ -40,8 +40,8 @@ class BuildingType(models.Model):
 
 class Building(models.Model):
     type = models.ForeignKey(BuildingType, on_delete=models.CASCADE, verbose_name="Тип")
-    street = models.CharField('Улица', max_length=25, unique=True)
-    house = models.CharField('Дом', max_length=8, unique=True)
+    street = models.CharField('Улица', max_length=25, unique=False)
+    house = models.CharField('Дом', max_length=8, unique=False)
     region = models.ForeignKey(Region, models.CASCADE, blank=True, null=True)
 
     class Meta:
