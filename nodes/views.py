@@ -23,7 +23,10 @@ class ListAndCreateNodeView(CreateView):
     model = Node
     template_name = "nodes/list.html"
     fields = create_and_update_fileds
-    success_url = '/nodes/'
+    # success_url = '/nodes/'
+
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

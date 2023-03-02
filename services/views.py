@@ -28,8 +28,10 @@ class ListAndCreateServiceView(CreateView):
     model = Service
     template_name = "services/list.html"
     fields = create_and_update_fileds
-    success_url = '/services/'
+    # success_url = '/services/'
 
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

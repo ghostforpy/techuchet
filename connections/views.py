@@ -26,7 +26,10 @@ class ListAndCreateConnectionUnitView(CreateView):
     model = ConnectionUnit
     template_name = "connections/list.html"
     fields = create_and_update_fileds
-    success_url = '/connections/'
+    # success_url = '/connections/'
+
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
