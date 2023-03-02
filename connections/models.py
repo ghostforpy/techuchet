@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Max
+# from django.db.models import Max
 from django.urls import reverse
 
 # Create your models here.
@@ -16,10 +16,9 @@ class ConnectionUnitType(models.Model):
         return self.name
 
 
-def autoincrement():
-    last = ConnectionUnit.objects.all().aggregate(max=Max('number'))
-    return last['max'] + 1 if last['max'] else 1
-
+# def autoincrement():
+    # last = ConnectionUnit.objects.all().aggregate(max=Max('number'))
+    # return last['max'] + 1 if last['max'] else 1
 
 class ConnectionUnit(models.Model):
     type = models.ForeignKey(ConnectionUnitType, on_delete=models.CASCADE, verbose_name="Тип")
@@ -34,7 +33,7 @@ class ConnectionUnit(models.Model):
         'Порядковый номер интерфейса',
         blank=True, 
         null=True,
-        default=autoincrement
+        default=1
     )
     node = models.ForeignKey(
         'nodes.Node',
