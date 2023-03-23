@@ -10,4 +10,5 @@ class ConnectionUnitTypeAdmin(admin.ModelAdmin):
 
 @admin.register(ConnectionUnit)
 class ConnectionUnitAdmin(admin.ModelAdmin):
+    readonly_fields = ('in_use_between_nodes',)
     pass

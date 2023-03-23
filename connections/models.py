@@ -1,6 +1,7 @@
 from django.db import models
 # from django.db.models import Max
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -57,6 +58,15 @@ class ConnectionUnit(models.Model):
         null=True,
         blank=True
     )
+    parent_node_connection_unit = models.OneToOneField(
+        "self",
+        on_delete=models.SET_NULL,
+        verbose_name="Порт родительского логического устройства",
+        null=True,
+        blank=True,
+        related_name="children_node_connection_unit"
+    )
+    in_use_between_nodes = models.BooleanField("Используется для соединения оборудования", default=False)
 
     class Meta:
         verbose_name = "Интерфейс"
@@ -64,7 +74,54 @@ class ConnectionUnit(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return f'{self.type} № {self.number}'
+        return f'{self.type} № {self.number} {self.node.ip_address}'
 
     def get_absolute_url(self):
         return reverse('connection-detail', kwargs={'pk': self.pk})
+
+    def clean(self):
+        if self.parent_node_connection_unit:
+            if self.node.connectionunit_set.filter(parent_node_connection_unit__isnull=False).exclude(pk=self.pk).exists():
+                conn = self.node.connectionunit_set.filter(parent_node_connection_unit__isnull=False).first()
+                msg = f'У данного логического устройства уже выбрано родительское логическое устройство {conn.parent_node_connection_unit.node.ip_address}.'
+                raise ValidationError({'parent_node_connection_unit': msg})
+            if self.node == self.parent_node_connection_unit.node:
+                raise ValidationError({'parent_node_connectpassion_unit':'Нельзя соединять логическое устройство с самим собой.'})
+            if self.node.parent != self.parent_node_connection_unit.node:
+                raise ValidationError({'parent_node_connection_unit':'Выбрано неправильное родительское устройство.'})
+            if self.parent_node_connection_unit.in_use_between_nodes:
+                raise ValidationError({'parent_node_connection_unit':'Порт в родительском логическом устройстве занят.'})
+        return super().clean()
+
+    def save(self, *args, **kwargs):
+        self.in_use_between_nodes = self.parent_node_connection_unit is not None or hasattr(self, 'children_node_connection_unit')
+        if self.parent_node_connection_unit:
+            # установить соединение с родительским устройством
+            if not self.parent_node_connection_unit.in_use_between_nodes:
+                # поменять у родительского утсройства флаг использования для соединений оборудования
+                ConnectionUnit.objects.filter(pk=self.parent_node_connection_unit.pk).update(in_use_between_nodes=True)
+            if self.pk:
+                # проверка на изменения
+                obj = ConnectionUnit.objects.get(pk=self.pk)
+                if self.parent_node_connection_unit != obj.parent_node_connection_unit and obj.parent_node_connection_unit:
+                    # сбросить у родительского устройства флаг использования для соединений оборудования,
+                    # если родительское устройство поменялось
+                    ConnectionUnit.objects.filter(pk=obj.parent_node_connection_unit.pk).update(in_use_between_nodes=False)
+        else:
+            # сброс соединения с родительским устройством
+            if self.pk:
+                # проверка на изменения
+                obj = ConnectionUnit.objects.get(pk=self.pk)
+                if obj.parent_node_connection_unit:
+                    # сбросить у родительского устройства флаг использования для соединений оборудования
+                    ConnectionUnit.objects.filter(pk=obj.parent_node_connection_unit.pk).update(in_use_between_nodes=False)
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.parent_node_connection_unit:
+            # сбросить соединение с родительским устройством
+            ConnectionUnit.objects.filter(pk=self.parent_node_connection_unit.pk).update(in_use_between_nodes=False)
+        if hasattr(self, 'children_node_connection_unit'):
+            # сбросить соединение с подчиненным устройством
+            ConnectionUnit.objects.filter(pk=self.children_node_connection_unit.pk).update(in_use_between_nodes=False)
+        return super().delete(*args, **kwargs)
