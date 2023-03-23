@@ -83,7 +83,8 @@ class ConnectionUnit(models.Model):
         if self.parent_node_connection_unit:
             if self.node.connectionunit_set.filter(parent_node_connection_unit__isnull=False).exclude(pk=self.pk).exists():
                 conn = self.node.connectionunit_set.filter(parent_node_connection_unit__isnull=False).first()
-                msg = f'У данного логического устройства уже выбрано родительское логическое устройство {conn.parent_node_connection_unit.node.ip_address}.'
+                ip = conn.parent_node_connection_unit.node.ip_address
+                msg = f'У данного логического устройства уже выбрано родительское логическое устройство {ip}.'
                 raise ValidationError({'parent_node_connection_unit': msg})
             if self.node == self.parent_node_connection_unit.node:
                 raise ValidationError({'parent_node_connectpassion_unit':'Нельзя соединять логическое устройство с самим собой.'})
