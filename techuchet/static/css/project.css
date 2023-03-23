@@ -26,3 +26,12 @@
   height: 75px;
 
 }
+.select-create-connection-unit{
+  width: 70% !important; 
+}
+.input-number-create-connection-unit{
+  width: 17% !important; 
+}
+.btns-create-connection-unit{
+  width: 8% !important; 
+}

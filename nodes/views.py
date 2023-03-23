@@ -2,7 +2,9 @@ from datetime import datetime
 
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.core.paginator import Paginator
+
 from abonents.models import ObjectStatus
+from connections.models import ConnectionUnitType
 from buildings.models import Building, Region
 
 from .models import Node, NodeName, NodeType
@@ -131,4 +133,5 @@ class UpdateNodeView(UpdateView):
         context["regions"] = Region.objects.all()
         context['buildings'] = Building.objects.select_related('region').all()
         context['all_nodes'] = Node.objects.all()
+        context['connection_unit_types'] = ConnectionUnitType.objects.all()
         return context

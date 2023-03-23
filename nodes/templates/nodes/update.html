@@ -2,18 +2,45 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h2>Оборудование {{ object.ip_address }}</h2>
+    <div class="d-flex justify-content-between mt-2">
+      <h2>Оборудование {{ object.ip_address }}</h2>
+      {% if object.connectionunit_set.exists %}
+        <a class="btn btn-outline-secondary" href="{% url 'connection-list' %}?ip_address={{ object.ip_address }}" role="button">Перейти к списку интерфейсов</a>
+      {% else %}
+        <button type="button" class="btn btn-outline-secondary" id="modal-btn" data-bs-toggle="modal" data-bs-target="#createConnectionsModal">Создать интерфейсы</button>
+        <div class="modal fade" id="createConnectionsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Создать интерфейсы</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" id="modalCreateConnectionUnitBody">
+                {% comment %} Здесь создается динамически {% endcomment %}
+              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                  <button type="submit" class="btn btn-primary" id="modalCreateConnectionUnitCreateBtn">Создать</button>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      
+    </div>
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
       {% include 'nodes/parent_node_name_list.html' %}
       <div class="d-flex justify-content-between mt-3">
         <button type="submit" class="btn btn-primary">Обновить</button>
-        <a href="{% url 'node-list'%}" role="button" class="btn btn-secondary">К списку оборудования</a>
+        <a href="{% url 'node-list' %}" role="button" class="btn btn-secondary">К списку оборудования</a>
       </div>
     </form>
     {% include 'nodes/node_name_js.html' %}
     {% include 'nodes/region_js.html' %}
     {% include 'nodes/parent_node_name_js.html' %}
+    {% include 'nodes/create_connection_units_js.html' %}
 
 {% endblock %}

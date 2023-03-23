@@ -1,0 +1,90 @@
+<script>
+    
+    var connectionUnitTypes = new Array();
+    {% for i in connection_unit_types %}
+      connectionUnitTypes.push({
+        'name':'{{ i }}', 
+        'id':'{{ i.id }}'
+      });
+    {% endfor %}
+    const modalCreateConnectionUnitBody = document.getElementById("modalCreateConnectionUnitBody");
+    let divCreateConnectionUnit = document.createElement('div');
+    divCreateConnectionUnit.classList.add('d-flex')
+    divCreateConnectionUnit.classList.add('flex-inline')
+    divCreateConnectionUnit.classList.add('justify-content-between')
+    divCreateConnectionUnit.classList.add('mt-2')
+    let selectCreateConnectionUnit = document.createElement('select');
+    selectCreateConnectionUnit.classList.add('form-control');
+    selectCreateConnectionUnit.classList.add('select-create-connection-unit');
+    connectionUnitTypes.forEach(function(item, index, array) {
+      let optionLast = document.createElement('option');
+          optionLast.value = item.id;
+          optionLast.innerHTML = item.name;
+          selectCreateConnectionUnit.append(optionLast);
+    })
+    divCreateConnectionUnit.append(selectCreateConnectionUnit)
+    let inputNumberCreateConnectionUnit = document.createElement('input');
+    inputNumberCreateConnectionUnit.type = "number";
+    inputNumberCreateConnectionUnit.min = 0;
+    inputNumberCreateConnectionUnit.step = "any";
+    inputNumberCreateConnectionUnit.classList.add('numberinput');
+    inputNumberCreateConnectionUnit.classList.add('form-control');
+    inputNumberCreateConnectionUnit.classList.add('input-number-create-connection-unit');
+    divCreateConnectionUnit.append(inputNumberCreateConnectionUnit)
+    let button_delete = document.createElement('button');
+    button_delete.classList.add('btn');
+    button_delete.classList.add('btn-outline-danger');
+    button_delete.classList.add('btns-create-connection-unit');
+    button_delete.innerHTML = 'X';
+    divCreateConnectionUnit.append(button_delete)
+    var dupNode = divCreateConnectionUnit.cloneNode(true)
+    modalCreateConnectionUnitBody.append(dupNode)
+    function addOnclick(){
+      let elements = document.getElementsByClassName("btns-create-connection-unit");
+      for(let i = 0; i < elements.length; i++) {
+        elements[i].onclick = function () {
+            this.parentNode.remove();
+        }
+      }
+    }
+    addOnclick();
+    let button_add = document.createElement('button');
+    button_add.onclick = function() {
+      var dupNode = divCreateConnectionUnit.cloneNode(true)
+      button_add.before(dupNode);
+      addOnclick();
+    };
+    button_add.classList.add('btn');
+    button_add.classList.add('btn-outline-success');
+    button_add.classList.add('mt-2');
+    button_add.classList.add('w-100');
+    button_add.innerHTML = '+';
+    modalCreateConnectionUnitBody.append(button_add)
+
+
+    const modalCreateConnectionUnitCreateBtn = document.getElementById("modalCreateConnectionUnitCreateBtn");
+    modalCreateConnectionUnitCreateBtn.onclick = function() {
+      let elements = document.getElementsByClassName("select-create-connection-unit");
+      let elementsArray = new Array()
+      for(let i = 0; i < elements.length; i++) {
+        if (parseInt(elements[i].nextElementSibling.value)){
+          elementsArray.push({
+            'type_id': parseInt(elements[i].value), 
+            'nums': parseInt(elements[i].nextElementSibling.value)
+          });
+        }
+      }
+      if (elementsArray.length > 0) {
+        axios.post('/connections/create_connection_units/', {
+          connection_units: elementsArray,
+          node_id: {{ object.id }}
+        })
+        .then(function (response) {
+          location.reload();
+        })
+        .catch(function (error) {
+          alert("Что-то пошло не так.")
+        });
+      }
+    };
+  </script>

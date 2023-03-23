@@ -1,8 +1,13 @@
 # from django.shortcuts import render
 # from django.views.generic import ListView
+import json
+
+from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from abonents.models import ObjectStatus
 from nodes.models import Node
@@ -109,3 +114,21 @@ class UpdateConnectionUnitView(UpdateView):
         context["service_names"] = Service.objects.select_related('abonent').all()
         context["nodes"] = Node.objects.all()
         return context
+
+
+@csrf_exempt
+def create_connection_units(request):
+    data = json.loads(request.body)
+    node_id = data["node_id"]
+    node = get_object_or_404(Node, id=node_id)
+    connections = []
+    number = 1
+    for connection_unit in data["connection_units"]:
+        connection_type = get_object_or_404(ConnectionUnitType, id=connection_unit["type_id"])
+        for _ in range(connection_unit["nums"]):
+            connections.append(
+                ConnectionUnit(type=connection_type, node=node, number=number)
+            )
+            number += 1
+    ConnectionUnit.objects.bulk_create(connections)
+    return JsonResponse({"status": "ok"})
