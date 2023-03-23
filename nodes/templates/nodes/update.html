@@ -22,7 +22,6 @@
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                   <button type="submit" class="btn btn-primary" id="modalCreateConnectionUnitCreateBtn">Создать</button>
                 </div>
-              
             </div>
           </div>
         </div>
@@ -41,6 +40,8 @@
     {% include 'nodes/node_name_js.html' %}
     {% include 'nodes/region_js.html' %}
     {% include 'nodes/parent_node_name_js.html' %}
-    {% include 'nodes/create_connection_units_js.html' %}
+    {% if not object.connectionunit_set.exists %}
+      {% include 'nodes/create_connection_units_js.html' %}
+    {% endif %}
 
 {% endblock %}
