@@ -80,6 +80,8 @@ class ConnectionUnit(models.Model):
         return reverse('connection-detail', kwargs={'pk': self.pk})
 
     def clean(self):
+        if self.parent_node_connection_unit and self.service:
+            raise ValidationError('Порт не может использоваться для предоставления услуг и для подключения логических устройств одновременно.')
         if self.parent_node_connection_unit:
             if self.node.connectionunit_set.filter(parent_node_connection_unit__isnull=False).exclude(pk=self.pk).exists():
                 conn = self.node.connectionunit_set.filter(parent_node_connection_unit__isnull=False).first()
@@ -87,12 +89,12 @@ class ConnectionUnit(models.Model):
                 msg = f'У данного логического устройства уже выбрано родительское логическое устройство {ip}.'
                 raise ValidationError({'parent_node_connection_unit': msg})
             if self.node == self.parent_node_connection_unit.node:
-                raise ValidationError({'parent_node_connectpassion_unit':'Нельзя соединять логическое устройство с самим собой.'})
+                raise ValidationError({'parent_node_connection_unit':'Нельзя соединять логическое устройство с самим собой.'})
             if self.node.parent != self.parent_node_connection_unit.node:
-                raise ValidationError({'parent_node_connection_unit':'Выбрано неправильное родительское устройство.'})
-            if self.parent_node_connection_unit.in_use_between_nodes:
+                msg = f'Выбрано неправильное родительское логическое устройство. Необходимо выбрать порт логического устройства {self.node.parent.ip_address}'
+                raise ValidationError({'parent_node_connection_unit': msg})
+            if self.parent_node_connection_unit.in_use_between_nodes or self.parent_node_connection_unit.service:
                 raise ValidationError({'parent_node_connection_unit':'Порт в родительском логическом устройстве занят.'})
-        return super().clean()
 
     def save(self, *args, **kwargs):
         self.in_use_between_nodes = self.parent_node_connection_unit is not None or hasattr(self, 'children_node_connection_unit')
