@@ -6,13 +6,14 @@
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
-      {% include 'connections/name_service_list.html' %}
+      {% if not object.in_use_between_nodes %}
+        {% include 'connections/name_service_list.html' %}
+      {% endif %}
       {% include 'connections/node_name_list.html' %}
       <div class="d-flex justify-content-between mt-3">
         <button type="submit" class="btn btn-primary">Обновить</button>
         <a href="{% url 'connection-list'%}" role="button" class="btn btn-secondary">К списку интерфейсов</a>
       </div>
-
     </form>
     {% include 'connections/service_name_js.html' %}
     {% include 'connections/node_name_js.html' %}

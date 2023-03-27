@@ -33,7 +33,25 @@
                   <td><a href="{{ connection.node.get_absolute_url }}">{{ connection.node.ip_address }}</a></td>
                     <td>{{ connection.rate }}</td>
                     <td>{{ connection.status }}</td>
-                  <td><a href="{{ connection.service.get_absolute_url }}">{{ connection.service }}</a></td>
+                  <td>
+                    {% if connection.in_use_between_nodes %}
+                      {% if connection.parent_node_connection_unit %}
+                        <a href="{{ connection.parent_node_connection_unit.get_absolute_url }}">
+                          {{ connection.parent_node_connection_unit }}
+                        </a>
+                      {% elif connection.children_node_connection_unit %}
+                        <a href="{{ connection.children_node_connection_unit.get_absolute_url }}">
+                          {{ connection.children_node_connection_unit }}
+                        </a>
+                      {% else %}
+                        Подключение оборудования
+                      {% endif %}
+                    {% else %}
+                      {% if connection.service %}
+                        <a href="{{ connection.service.get_absolute_url }}">{{ connection.service }}</a>
+                      {% endif %}
+                    {% endif %}
+                  </td>
                 </tr>
             {% endfor %}
             <form action=".">

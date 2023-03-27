@@ -2,7 +2,50 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h2>Услуга {{ object.name }}</h2>
+    <div class="d-flex justify-content-between mt-2">
+      <h2>Услуга {{ object.name }}</h2>
+        <button type="button" class="btn btn-outline-secondary" id="modal-btn" data-bs-toggle="modal" data-bs-target="#createConnectionsModal">Дерево подключений</button>
+        <div class="modal fade" id="createConnectionsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Дерево подключений</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" id="modalCreateConnectionUnitBody">
+                {% if connections %}
+                  <table class="table">
+                      <thead>
+                      <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Ближний порт</th>
+                          <th scope="col">Удаленный порт</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                          {% for connection in connections %}
+                              <tr>
+                                  <th scope="row">{{ forloop.counter }}</th>
+                                  <td>{{ connection.self_port }}</td>
+                                  <td><a href="{{connection.related_port.get_absolute_url}}">{{ connection.related_port }}</a></td>
+                              </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                {% else %}
+                  Подключений не обнаружено
+                {% endif %}
+              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
     <form method="post" action=".">
       {% csrf_token %}
       {{ form|crispy }}
