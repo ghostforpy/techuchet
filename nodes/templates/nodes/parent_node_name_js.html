@@ -35,6 +35,9 @@
           search_select_nodes.value = item.name;
           parent_node_select.value = item.id;
           dropDownMenuNodes.classList.remove('show');
+          {% if object.connectionunit_set.exists %}
+            changeConnectionUnitSelect();
+          {% endif %}
         };
         liLast.append(aLast);
         dropDownMenuNodes.append(liLast);
@@ -47,4 +50,9 @@
             dropDownMenuNodes.classList.remove('show');
         };
     };
+    const div_id_self_connectionunit = document.getElementById("div_id_self_connectionunit");
+    div_id_self_connectionunit.classList.add('d-none')
+    const div_id_parent_node_connectionunit = document.getElementById("div_id_parent_node_connectionunit");
+    div_id_parent_node_connectionunit.classList.add('d-none')
+
   </script>

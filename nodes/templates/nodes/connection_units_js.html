@@ -1,0 +1,57 @@
+<script>
+    
+    var connectionUnits = new Array();
+    var selfConnectionUnits = new Array();
+    const id_self_connectionunit = document.getElementById("id_self_connectionunit");
+    const id_parent_node_connectionunit = document.getElementById("id_parent_node_connectionunit");
+
+    {% for i in connection_units %}
+      {% if i.node_id == object.id %}
+       selfConnectionUnits.push({
+          'number':'{{ i.number }}', 
+          'id':'{{ i.id }}',
+          'parent_connection' : {% if i.parent_connection %}true{% else %}false{% endif %}
+        });
+      {% else %}
+        connectionUnits.push({
+          'number': '{{ i.number }}', 
+          'id': '{{ i.id }}',
+          'node_id': '{{ i.node_id }}',
+          'connection_name': '{{ i.connection_name }}',
+          'node_ip': '{{ i.node_ip }}',
+          'connect_to_children': '{{ i.connect_to_children }}'
+        });
+      {% endif %}
+    {% endfor %}
+    selfConnectionUnits.forEach(function(item, index, array) {
+      if (item.parent_connection){
+        id_self_connectionunit.value = item.id
+      }
+    })
+    const parent_node_connectionunits_select = document.getElementById("id_parent_node_connectionunits");
+    function changeConnectionUnitSelect() {
+      id_parent_node_connectionunit.value = ""
+      parent_node_connectionunits_select.innerHTML = '<option>---------</option>';
+      connectionUnits.forEach(function(item, index, array) {
+        if (item.node_id === parent_node_select.value){
+            let optionLast = document.createElement('option');
+            optionLast.value = item.id;
+            optionLast.innerHTML = item.connection_name + ' № ' + item.number;
+            if (item.connect_to_children === '{{object.id}}'){
+              optionLast.selected = true
+              id_parent_node_connectionunit.value = item.id
+            }
+            parent_node_connectionunits_select.append(optionLast);
+        }
+      })
+    };
+    parent_node_connectionunits_select.onchange = function(){
+      id_parent_node_connectionunit.value = parent_node_connectionunits_select.value
+    }
+    const id_self_connectionunits = document.getElementById("id_self_connectionunits");
+    id_self_connectionunits.onchange = function(){
+      id_self_connectionunit.value = id_self_connectionunits.value
+    }
+    changeConnectionUnitSelect();
+
+  </script>

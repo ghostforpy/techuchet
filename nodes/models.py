@@ -80,10 +80,21 @@ class Node(models.Model):
         return f'{self.name.name} {self.ip_address}'
 
     def save(self, *args, **kwargs):
+        def clear_conn_unit():
+            conn = self.connectionunit_set.filter(
+                in_use_between_nodes=True,
+                parent_node_connection_unit__isnull=False
+            )
+            if conn.exists():
+                conn = conn.get()
+                conn.parent_node_connection_unit = None
+                conn.in_use_between_nodes = False
+                conn.save()
         if self.pk:
             if not self.parent:
-                self.connectionunit_set.filter(
-                    in_use_between_nodes=True,
-                    parent_node_connection_unit__isnull=False
-                ).update(parent_node_connection_unit=None, in_use_between_nodes=False)
+                clear_conn_unit()
+            else:
+                node = Node.objects.get(pk=self.pk)
+                if self.parent != node.parent:
+                    clear_conn_unit()
         return super().save(*args, **kwargs)

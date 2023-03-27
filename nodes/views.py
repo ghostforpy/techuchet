@@ -2,23 +2,13 @@ from datetime import datetime
 
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.core.paginator import Paginator
-
+from django.db.models import F
 from abonents.models import ObjectStatus
-from connections.models import ConnectionUnitType
+from connections.models import ConnectionUnit, ConnectionUnitType
 from buildings.models import Building, Region
 
 from .models import Node, NodeName, NodeType
-
-
-create_and_update_fileds = [
-    'type', 
-    'name', 
-    'status', 
-    # 'entity', 
-    'building', 
-    'ip_address',
-    'parent'
-]
+from .forms import NodeUpdateForm, create_and_update_fileds
 
 
 class ListAndCreateNodeView(CreateView):
@@ -124,8 +114,8 @@ class ListAndCreateNodeView(CreateView):
 class UpdateNodeView(UpdateView):
     model = Node
     template_name = "nodes/update.html"
-    fields = create_and_update_fileds
     success_url = '/nodes/'
+    form_class = NodeUpdateForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -134,4 +124,60 @@ class UpdateNodeView(UpdateView):
         context['buildings'] = Building.objects.select_related('region').all()
         context['all_nodes'] = Node.objects.all()
         context['connection_unit_types'] = ConnectionUnitType.objects.all()
+        context["connection_units"] = ConnectionUnit.objects.filter(
+            service__isnull=True,
+        ).values("id", "number").annotate(
+            node_id=F("node__pk"), 
+            node_ip=F("node__ip_address"),
+            connection_name=F("type__name"),
+            parent_connection=F("parent_node_connection_unit__pk"),
+            connect_to_children=F("children_node_connection_unit__node__id")
+        )
         return context
+    
+    def form_valid(self, form):
+        self_connectionunit_id = form.cleaned_data.get("self_connectionunit")
+        parent_node_connectionunit_id = form.cleaned_data.get("parent_node_connectionunit")
+
+        response = super().form_valid(form)
+        if self_connectionunit_id and parent_node_connectionunit_id:
+            old_self_conn = ConnectionUnit.objects.filter(
+                node=form.instance,
+                parent_node_connection_unit__isnull=False,
+                in_use_between_nodes=True
+            )
+            def set_connection():
+                connectionunit = form.instance.connectionunit_set.filter(id=self_connectionunit_id).get()
+                parent_node_connectionunit = form.instance.parent.connectionunit_set.filter(
+                    id=parent_node_connectionunit_id
+                ).get()
+                connectionunit.parent_node_connection_unit = parent_node_connectionunit
+                connectionunit.save()
+
+            if old_self_conn.exists():
+                # до этого уже было соединение
+                old_self_conn = old_self_conn.get()
+                if old_self_conn.id != self_connectionunit_id:
+                    # сброс старого соединения
+                    old_self_conn.parent_node_connection_unit = None
+                    old_self_conn.save()
+                    # установка нового соединения
+                    ConnectionUnit.objects.filter(
+                        id=self_connectionunit_id
+                    ).update(
+                        parent_node_connection_unit=parent_node_connectionunit_id,
+                        in_use_between_nodes=True
+                    )
+                    # обновление статуса встречного порта
+                    ConnectionUnit.objects.filter(
+                        id=parent_node_connectionunit_id
+                    ).update(in_use_between_nodes=True)
+                else:
+                    # свой порт не менялся
+                    if old_self_conn.parent_node_connection_unit.id != parent_node_connectionunit_id:
+                        # встречный порт поменялся
+                        set_connection()
+            else:
+                # новое соединение
+                set_connection()
+        return response
