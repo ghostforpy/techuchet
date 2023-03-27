@@ -78,3 +78,12 @@ class Node(models.Model):
 
     def __str__(self):
         return f'{self.name.name} {self.ip_address}'
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            if not self.parent:
+                self.connectionunit_set.filter(
+                    in_use_between_nodes=True,
+                    parent_node_connection_unit__isnull=False
+                ).update(parent_node_connection_unit=None, in_use_between_nodes=False)
+        return super().save(*args, **kwargs)
