@@ -116,31 +116,32 @@ class UpdateServiceView(UpdateView):
         context["abonent_names"] = Abonent.objects.all()
         obj = context["object"]
         connectionunit = obj.connectionunit_set.first()
-        connections = []
-        connections.append(
-            {
-                "self_port": str(obj.abonent),
-                "related_port": connectionunit,
-                # "related_node": connectionunit.node
-            }
-        )
-        node = connectionunit.node
-        while node.parent:
-            conn = node.connectionunit_set.filter(parent_node_connection_unit__isnull=False)
-            if conn.exists():
-                conn = conn.get()
-                parent_conn = conn.parent_node_connection_unit
-                connections.append(
-                    {
-                        "self_port": str(conn),
-                        "related_port": parent_conn,
-                        # "related_node": parent_conn.node
-                    }
-                )
-                node = parent_conn.node
-            else:
-                break
-        context["connections"] = connections
+        if connectionunit:
+            connections = []
+            connections.append(
+                {
+                    "self_port": str(obj.abonent),
+                    "related_port": connectionunit,
+                    # "related_node": connectionunit.node
+                }
+            )
+            node = connectionunit.node
+            while node.parent:
+                conn = node.connectionunit_set.filter(parent_node_connection_unit__isnull=False)
+                if conn.exists():
+                    conn = conn.get()
+                    parent_conn = conn.parent_node_connection_unit
+                    connections.append(
+                        {
+                            "self_port": str(conn),
+                            "related_port": parent_conn,
+                            # "related_node": parent_conn.node
+                        }
+                    )
+                    node = parent_conn.node
+                else:
+                    break
+            context["connections"] = connections
         return context
 
 

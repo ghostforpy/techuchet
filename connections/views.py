@@ -123,11 +123,15 @@ def create_connection_units(request):
     node = get_object_or_404(Node, id=node_id)
     connections = []
     number = 1
+    try:
+        status = ObjectStatus.objects.get(name="Готов")
+    except ObjectStatus.DoesNotExist:
+        status = None
     for connection_unit in data["connection_units"]:
         connection_type = get_object_or_404(ConnectionUnitType, id=connection_unit["type_id"])
         for _ in range(connection_unit["nums"]):
             connections.append(
-                ConnectionUnit(type=connection_type, node=node, number=number)
+                ConnectionUnit(type=connection_type, node=node, number=number, status=status)
             )
             number += 1
     ConnectionUnit.objects.bulk_create(connections)
