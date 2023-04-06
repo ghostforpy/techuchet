@@ -22,3 +22,18 @@ def abonents_report(request):
             [abonent.contract, abonent.name, abonent.type.name, abonent.phone, abonent.enable_date]
         )
     return ExcelResponse(data, 'abonents')
+
+
+def abonents_repair_report(request):
+    status = ObjectStatus.objects.get(name="Ремонт")
+    qs = Abonent.objects.select_related('type').filter(
+        object_status=status
+    )
+    data = [
+        ['Номер договора', 'Имя', 'Тип абонента', 'Телефон', 'Дата подключения']
+    ]
+    for abonent in qs:
+        data.append(
+            [abonent.contract, abonent.name, abonent.type.name, abonent.phone, abonent.enable_date]
+        )
+    return ExcelResponse(data, 'abonents')
