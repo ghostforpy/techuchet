@@ -11,8 +11,8 @@ SECRET_KEY = env(
     default="nPfqZxGlt8nVYyp7lX0iri8XZJP3ozhIH2YEks6ijuyw2uS2X5JC5HvyEjq8neYs",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", ".ngrok.io"]
-CSRF_TRUSTED_ORIGINS = ['https://*.ngrok.io']
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", ".ngrok.io", ".ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok.io', 'https://*.ngrok-free.app']
 # CACHES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
